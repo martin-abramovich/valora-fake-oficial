@@ -68,12 +68,15 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
           name="contact"
           method="POST"
           data-netlify="true"
+          data-netlify-honeypot="bot-field"
           class="grid grid-cols-1 sm:grid-cols-2 gap-5"
         >
-          <!-- Required by Netlify when using data-netlify on a JS-rendered form -->
           <input type="hidden" name="form-name" value="contact" />
-          <!-- Email subject line visible in Netlify notifications -->
           <input type="hidden" name="subject" value="New project inquiry — Valora" />
+          <!-- Honeypot: invisible to humans, bots fill it → Netlify silently discards the submission -->
+          <p class="hidden" aria-hidden="true">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
 
           <!-- Full name -->
           <div class="flex flex-col gap-1">
@@ -226,7 +229,6 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
           </p>
           <p class="font-body text-dark/60 text-sm leading-relaxed">
             Your inquiry has been received.<br />
-            We'll respond with a point of view shortly.
           </p>
         </div>
       </div>
