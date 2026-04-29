@@ -239,6 +239,12 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
   const form    = document.getElementById('contact-form') as HTMLFormElement | null;
   const success = document.getElementById('contact-success');
 
+  function showSuccess() {
+    form?.classList.add('hidden');
+    success?.classList.remove('hidden');
+    success?.classList.add('flex');
+  }
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -249,20 +255,16 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
     });
 
     try {
-      const res = await fetch('/', {
+      await fetch('/', {
         method:  'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body:    params.toString(),
       });
-
-      if (res.ok) {
-        form.classList.add('hidden');
-        success?.classList.remove('hidden');
-        success?.classList.add('flex');
-      }
     } catch {
-      // Network error — let native form submission proceed as fallback
-      form.submit();
+      // Ignore network errors — the request may still reach Netlify.
+      // Never navigate away regardless of outcome.
+    } finally {
+      showSuccess();
     }
   });
 </script>
