@@ -64,6 +64,7 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
       <!-- Form -->
       <div class="reveal slide-right delay-200">
         <form
+          id="contact-form"
           name="contact"
           method="POST"
           data-netlify="true"
@@ -216,8 +217,52 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
           </div>
 
         </form>
+
+        <!-- Success message shown after submission -->
+        <div id="contact-success" class="hidden flex-col gap-5 py-4">
+          <span class="text-gold text-base">✦</span>
+          <p class="font-heading text-dark text-2xl md:text-3xl font-light leading-snug">
+            Thank you.<br />We'll be in touch.
+          </p>
+          <p class="font-body text-dark/60 text-sm leading-relaxed">
+            Your inquiry has been received.<br />
+            We'll respond with a point of view shortly.
+          </p>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+
+<script>
+  const form    = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('contact-success');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data   = new FormData(form);
+    const params = new URLSearchParams();
+    data.forEach((value, key) => {
+      if (typeof value === 'string') params.append(key, value);
+    });
+
+    try {
+      const res = await fetch('/', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    params.toString(),
+      });
+
+      if (res.ok) {
+        form.classList.add('hidden');
+        success?.classList.remove('hidden');
+        success?.classList.add('flex');
+      }
+    } catch {
+      // Network error — let native form submission proceed as fallback
+      form.submit();
+    }
+  });
+</script>
