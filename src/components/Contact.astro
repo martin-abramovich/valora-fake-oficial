@@ -1,0 +1,223 @@
+---
+const roles = [
+  'Interior Designer',
+  'Creative Director',
+  'Brand Owner',
+  'Other',
+];
+
+const projectTypes = ['Hotel', 'Resort', 'Residential', 'Other'];
+const projectStages = ['Concept', 'Design Development', 'In Progress'];
+---
+
+<!--
+  Hidden form for Netlify's build-time bot detection.
+  Required when the site is built with a JS framework/SSG that
+  renders HTML dynamically. Must mirror every field name in the
+  visible form below.
+-->
+<form name="contact" data-netlify="true" hidden>
+  <input type="text"  name="fullname" />
+  <input type="text"  name="company" />
+  <select             name="role"><option /></select>
+  <input type="email" name="email" />
+  <input type="text"  name="location" />
+  <select             name="project-type"><option /></select>
+  <select             name="stage"><option /></select>
+  <textarea           name="message"></textarea>
+</form>
+
+<section
+  id="contact"
+  class="bg-cream overflow-hidden"
+>
+  <div class="flex flex-col md:flex-row md:items-stretch">
+
+    <!-- Image column: flush left on desktop, hidden on mobile -->
+    <div class="hidden md:block md:w-64 lg:w-72 md:shrink-0 md:mr-14 lg:mr-20">
+      <img
+        src="/images/contact-arch.webp"
+        alt="Arched teal doorway interior"
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- Text + Form area -->
+    <div class="flex-1 px-6 md:pl-0 md:pr-16 lg:pr-24 pt-12 pb-12 md:pt-20 md:pb-0 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
+
+      <!-- Text block -->
+      <div>
+        <span class="ornament reveal block mb-5 text-gold text-sm delay-100" aria-hidden="true">✦</span>
+
+        <h2 class="reveal font-heading text-dark text-3xl md:text-4xl lg:text-5xl font-light leading-[1.1] delay-200">
+          Let's define what this space needs to
+          <em class="font-script not-italic"> become.</em>
+        </h2>
+
+        <p class="reveal font-body text-dark/65 text-sm md:text-base mt-5 leading-relaxed delay-300">
+          Share the project details.<br />
+          We'll respond with a point of view.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <div class="reveal slide-right delay-200">
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          class="grid grid-cols-1 sm:grid-cols-2 gap-5"
+        >
+          <!-- Required by Netlify when using data-netlify on a JS-rendered form -->
+          <input type="hidden" name="form-name" value="contact" />
+          <!-- Email subject line visible in Netlify notifications -->
+          <input type="hidden" name="subject" value="New project inquiry — Valora" />
+
+          <!-- Full name -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="fullname">
+              Full name
+            </label>
+            <input
+              id="fullname"
+              name="fullname"
+              type="text"
+              required
+              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
+                     focus:outline-none focus:border-teal transition-colors duration-200"
+            />
+          </div>
+
+          <!-- Company / Studio -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="company">
+              Company / Studio
+            </label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
+                     focus:outline-none focus:border-teal transition-colors duration-200"
+            />
+          </div>
+
+          <!-- Role -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="role">
+              Role
+            </label>
+            <div class="relative">
+              <select
+                id="role"
+                name="role"
+                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
+                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
+              >
+                <option value="" disabled selected></option>
+                {roles.map((r) => <option value={r}>{r}</option>)}
+              </select>
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="email">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
+                     focus:outline-none focus:border-teal transition-colors duration-200"
+            />
+          </div>
+
+          <!-- Project location -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="location">
+              Project location
+            </label>
+            <input
+              id="location"
+              name="location"
+              type="text"
+              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
+                     focus:outline-none focus:border-teal transition-colors duration-200"
+            />
+          </div>
+
+          <!-- Project type -->
+          <div class="flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="project-type">
+              Project type
+            </label>
+            <div class="relative">
+              <select
+                id="project-type"
+                name="project-type"
+                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
+                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
+              >
+                <option value="" disabled selected></option>
+                {projectTypes.map((t) => <option value={t}>{t}</option>)}
+              </select>
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
+            </div>
+          </div>
+
+          <!-- Project stage — full width -->
+          <div class="sm:col-span-2 flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="stage">
+              Project stage
+            </label>
+            <div class="relative">
+              <select
+                id="stage"
+                name="stage"
+                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
+                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
+              >
+                <option value="" disabled selected></option>
+                {projectStages.map((s) => <option value={s}>{s}</option>)}
+              </select>
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
+            </div>
+          </div>
+
+          <!-- Tell us about the space — full width -->
+          <div class="sm:col-span-2 flex flex-col gap-1">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="message">
+              Tell us about the space
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
+                     focus:outline-none focus:border-teal transition-colors duration-200 resize-none"
+            />
+          </div>
+
+          <!-- Submit — full width, right-aligned -->
+          <div class="sm:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              class="font-body text-sm tracking-widest2 text-cream bg-forest px-10 py-3 uppercase
+                     hover:bg-teal transition-colors duration-300"
+            >
+              Send
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>

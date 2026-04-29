@@ -1,0 +1,159 @@
+---
+const solutions = [
+  {
+    title: 'Custom Mirrors & LED:',
+    description:
+      'High-tier functionality meets art. We design and manufacture bespoke mirror solutions and next-generation LED systems with 100% domestic production.',
+    images: [
+      { src: '/images/solution-mirrors.webp',   alt: 'Custom backlit mirror in bathroom' },
+      { src: '/images/solution-mirrors-2.webp', alt: 'LED mirror close-up detail' },
+      { src: '/images/solution-mirrors-3.webp', alt: 'Custom mirror' },
+    ],
+  },
+  {
+    title: 'Acoustic Panels:',
+    description:
+      'Where design meets technical performance. Bespoke acoustic solutions that transform the materiality of a space while elevating its atmosphere.',
+    images: [
+      { src: '/images/solution-acoustic.webp',   alt: 'Teal acoustic panel wall at bathroom' },
+      { src: '/images/solution-acoustic-2.webp', alt: 'Acoustic panel texture detail' },
+    ],
+  },
+  {
+    title: 'Wallcoverings:',
+    description:
+      'Transforming surfaces into narratives. Custom-scale wallpapering designed to dialogue with the architecture.',
+    images: [
+      { src: '/images/solution-wallcovering.webp',   alt: 'Tropical mural wallcovering in bedroom' },
+      { src: '/images/solution-wallcovering-2.webp', alt: 'Wallcovering pattern detail' },
+      { src: '/images/solution-wallcovering-3.webp', alt: 'Wallcovering pattern detail' },
+
+    ],
+  },
+  {
+    title: '3D Art & Commissions:',
+    description:
+      'Original work conceptualized in direct dialogue with the interior design, turning creative vision into tangible materiality.',
+    images: [
+      { src: '/images/solution-3d.webp',   alt: '3D art installation on hotel wall' },
+      { src: '/images/solution-3d-2.webp', alt: '3D art commission close-up' },
+      { src: '/images/solution-3d-3.webp', alt: '3D art commission close-up' },
+      { src: '/images/solution-3d-4.webp', alt: '3D art commission close-up' },
+      { src: '/images/solution-3d-5.webp', alt: '3D art commission close-up' },
+    ],
+  },
+];
+---
+
+<section
+  id="solutions"
+  class="bg-cream py-12 md:py-20 px-6 md:px-16"
+>
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Eyebrow -->
+    <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-14">
+      Bespoke Solutions
+    </p>
+
+    <!-- 2×2 grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-14">
+      {solutions.map((sol, i) => (
+        <article class={`reveal delay-${(i % 4) * 100 + 100}`}>
+
+          <!-- Slider -->
+          <div class="slider-wrap relative overflow-hidden aspect-4/3 mb-5" data-total={sol.images.length}>
+
+            <!-- Track width = n × 100% so each slide fills the visible area exactly -->
+            <div class="slider-track flex h-full transition-transform duration-500 ease-out will-change-transform"
+                 style={`width: ${sol.images.length * 100}%`}>
+              {sol.images.map((img) => (
+                <div class="h-full flex-none overflow-hidden" style={`width: ${100 / sol.images.length}%`}>
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <!-- Prev arrow -->
+            <button
+              type="button"
+              class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 z-10
+                     w-8 h-8 flex items-center justify-center
+                     bg-dark/50 hover:bg-dark/75 text-cream text-xl leading-none
+                     transition-colors duration-200
+                     disabled:opacity-25 disabled:pointer-events-none"
+              aria-label="Previous image"
+            >
+              ‹
+            </button>
+
+            <!-- Next arrow -->
+            <button
+              type="button"
+              class="slider-next absolute right-2 top-1/2 -translate-y-1/2 z-10
+                     w-8 h-8 flex items-center justify-center
+                     bg-dark/50 hover:bg-dark/75 text-cream text-xl leading-none
+                     transition-colors duration-200
+                     disabled:opacity-25 disabled:pointer-events-none"
+              aria-label="Next image"
+            >
+              ›
+            </button>
+
+          </div>
+
+          <!-- Title -->
+          <h3 class="font-heading text-dark text-xl md:text-2xl font-light mb-2">
+            {sol.title}
+          </h3>
+          <!-- Description -->
+          <p class="font-body text-dark/65 text-sm leading-relaxed">
+            {sol.description}
+          </p>
+
+        </article>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="reveal mt-16 flex justify-center delay-300">
+      <a
+        href="#contact"
+        class="font-body text-sm tracking-widest2 text-dark uppercase border border-dark px-10 py-4
+               hover:bg-dark hover:text-cream transition-all duration-300"
+      >
+        Bring your vision to life
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.slider-wrap').forEach((wrap) => {
+    const track = wrap.querySelector<HTMLElement>('.slider-track')!;
+    const prev  = wrap.querySelector<HTMLButtonElement>('.slider-prev')!;
+    const next  = wrap.querySelector<HTMLButtonElement>('.slider-next')!;
+    const total = parseInt(wrap.dataset.total ?? '2', 10);
+    const step  = 100 / total; // % of track width per slide
+    let current = 0;
+
+    function goto(idx: number) {
+      current = idx;
+      track.style.transform = `translateX(${-idx * step}%)`;
+
+      prev.disabled = idx === 0;
+      next.disabled = idx === total - 1;
+    }
+
+    prev.addEventListener('click', () => { if (current > 0) goto(current - 1); });
+    next.addEventListener('click', () => { if (current < total - 1) goto(current + 1); });
+
+    goto(0); // set initial disabled states
+  });
+</script>
