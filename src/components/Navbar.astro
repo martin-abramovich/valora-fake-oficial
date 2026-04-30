@@ -45,7 +45,7 @@ const navLinks = [
 <!-- Mobile menu -->
 <div
   id="mobile-menu"
-  class="fixed inset-0 z-40 bg-dark/95 backdrop-blur-sm flex flex-col items-center justify-center gap-8
+  class="fixed inset-0 z-40 bg-teal/90 backdrop-blur-lg flex flex-col items-center justify-center gap-8
          translate-x-full transition-transform duration-500 md:hidden"
 >
   {navLinks.map((link) => (
@@ -64,13 +64,15 @@ const navLinks = [
   const mobileMenu = document.getElementById('mobile-menu')!;
 
   // Scroll bg
-  window.addEventListener('scroll', () => {
+  function updateNavbar() {
     if (window.scrollY > 60) {
-      navbar.classList.add('bg-dark/90', 'backdrop-blur-md', 'shadow-md');
+      navbar.classList.add('bg-teal/90', 'backdrop-blur-lg', 'shadow-md');
     } else {
-      navbar.classList.remove('bg-dark/90', 'backdrop-blur-md', 'shadow-md');
+      navbar.classList.remove('bg-teal/90', 'backdrop-blur-lg', 'shadow-md');
     }
-  });
+  }
+  window.addEventListener('scroll', updateNavbar, { passive: true });
+  updateNavbar();
 
   // Mobile toggle
   toggle.addEventListener('click', () => {

@@ -4,10 +4,10 @@
 
 @theme {
   --color-cream:  #f5f0e8;
-  --color-dark:   #1c1514;
-  --color-teal:   #4a8f8f;
-  --color-gold:   #c8a96e;
-  --color-forest: #2d5a50;
+  --color-dark:   #101919;
+  --color-teal:   #04939F;
+  --color-gold:   #C58A3A;
+  --color-forest: #12474B;
 
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Inter', system-ui, sans-serif;
