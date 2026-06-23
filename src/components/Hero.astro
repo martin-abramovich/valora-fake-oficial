@@ -1,14 +1,16 @@
 ---
+import heroData from '../content/settings/hero.json';
+
+const bodyLines = heroData.body.split('\n');
 ---
 
 <section
   id="hero"
   class="relative min-h-screen flex items-end overflow-hidden bg-dark"
 >
-  <!-- Background image placeholder — replace src with real image. -->
   <div
     class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style="background-image: url('/images/hero-bg-3.png');"
+    style={`background-image: url('${heroData.background_image}');`}
     aria-hidden="true"
   >
     <!-- Dark gradient overlay -->
@@ -22,17 +24,19 @@
       class="reveal font-heading text-cream text-5xl md:text-7xl lg:text-8xl font-light leading-[1.05] mb-6"
       style="transition-delay:200ms"
     >
-      Mastery <em class="font-script not-italic font-normal">in</em> every detail.
+      {heroData.headline_before_em}<em class="font-script not-italic font-normal">{heroData.headline_em}</em>{heroData.headline_after_em}
     </h1>
 
     <!-- Body copy -->
     <p
       class="reveal font-body text-cream/80 text-sm md:text-base leading-relaxed max-w-lg delay-300"
     >
-      We transform five-star interiors into memorable experiences with mirrors
-      and art proudly handcrafted in the USA.<br />
-      Built on forty years of heritage.<br />
-      Your vision, elevated.
+      {bodyLines.map((line, i) => (
+        <>
+          {line}
+          {i < bodyLines.length - 1 && <br />}
+        </>
+      ))}
     </p>
 
     <!-- Gold rule -->

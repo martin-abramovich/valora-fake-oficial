@@ -1,4 +1,5 @@
 ---
+import aboutData from '../content/settings/about.json';
 ---
 
 <section
@@ -11,28 +12,19 @@
     <div class="px-6 md:pl-16 lg:pl-20 md:pr-4 md:flex-1 min-w-0">
 
       <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
-        About Valora — Philosophy &amp; Heritage
+        {aboutData.eyebrow}
       </p>
 
       <h2 class="reveal font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-8 delay-100">
-        Every space has a story.
-        We provide the
-        <em class="font-script not-italic">art</em> to&nbsp;tell it.
+        {aboutData.heading_before_em}<em class="font-script not-italic">{aboutData.heading_em}</em>{aboutData.heading_after_em}
       </h2>
 
       <div class="space-y-5 reveal delay-200">
-        <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
-          Valora is a creative partner for environments that demand a distinct
-          visual identity.
-        </p>
-        <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
-          Our process involves identifying the specific visual language a site
-          requires — and executing it with the same precision with which it was
-          conceived.
-        </p>
-        <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
-          This new chapter is backed by forty years of domestic excellence.
-        </p>
+        {aboutData.paragraphs.map((para: string) => (
+          <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
+            {para}
+          </p>
+        ))}
       </div>
     </div>
 
@@ -40,8 +32,8 @@
     <div class="reveal slide-right delay-200 px-6 md:px-0 md:shrink-0 md:w-[45%]">
       <div class="relative overflow-hidden aspect-5/4">
         <img
-          src="/images/solution-3d-4.webp"
-          alt="Luxurious interior with circular mirror and curved sofa"
+          src={aboutData.image}
+          alt={aboutData.image_alt}
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy"
         />

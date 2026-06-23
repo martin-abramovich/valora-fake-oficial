@@ -1,4 +1,5 @@
 ---
+import teamData from '../content/settings/team.json';
 ---
 
 <section
@@ -12,8 +13,8 @@
       <!-- Mobile: fixed 4/3 ratio — Desktop: fills full section height (no fixed ratio) -->
       <div class="relative overflow-hidden aspect-4/3 md:aspect-auto md:h-full">
         <img
-          src="/images/team-collaboration.webp"
-          alt="Valora team collaborating around a design table"
+          src={teamData.image}
+          alt={teamData.image_alt}
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy"
         />
@@ -30,13 +31,11 @@
       <span class="ornament block mb-6 text-gold text-sm" aria-hidden="true">✦</span>
 
       <h2 class="font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-7">
-        A Collective of Visionaries.
+        {teamData.heading}
       </h2>
 
       <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed max-w-md">
-        Behind every distinct visual identity is a team of specialized minds. We
-        combine forty years of technical expertise with a discerning creative
-        perspective to bring your most ambitious projects to life.
+        {teamData.description}
       </p>
     </div>
 
