@@ -9,11 +9,15 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cms": "decap-server"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.10",
     "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "decap-server": "^3.0.0"
   }
 }

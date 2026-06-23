@@ -1,13 +1,10 @@
 ---
-const roles = [
-  'Interior Designer',
-  'Creative Director',
-  'Brand Owner',
-  'Other',
-];
+import contactData from '../content/settings/contact.json';
 
-const projectTypes = ['Hotel', 'Resort', 'Residential', 'Other'];
-const projectStages = ['Concept', 'Design Development', 'In Progress'];
+const roles = contactData.roles;
+const projectTypes = contactData.project_types;
+const projectStages = contactData.project_stages;
+const bodyLines = contactData.body.split('\n');
 ---
 
 <!--
@@ -53,13 +50,17 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
         <span class="ornament reveal block mb-5 text-gold text-sm delay-100" aria-hidden="true">✦</span>
 
         <h2 class="reveal font-heading text-dark text-3x1 md:text-4xl lg:text-5xl font-light leading-[1.1] delay-200">
-          Let's define what this space needs to
-          <em class="font-script not-italic"> become.</em>
+          {contactData.heading_before_em}
+          <em class="font-script not-italic"> {contactData.heading_em}</em>
         </h2>
 
         <p class="reveal font-body text-dark/65 text-sm md:text-base mt-5 leading-relaxed delay-300">
-          Share the project details.<br />
-          We'll respond with a point of view.
+          {bodyLines.map((line: string, i: number) => (
+            <>
+              {line}
+              {i < bodyLines.length - 1 && <br />}
+            </>
+          ))}
         </p>
       </div>
 
@@ -122,7 +123,7 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
                        focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
               >
                 <option value="" disabled selected></option>
-                {roles.map((r) => <option value={r}>{r}</option>)}
+                {roles.map((r: string) => <option value={r}>{r}</option>)}
               </select>
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
             </div>
@@ -170,7 +171,7 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
                        focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
               >
                 <option value="" disabled selected></option>
-                {projectTypes.map((t) => <option value={t}>{t}</option>)}
+                {projectTypes.map((t: string) => <option value={t}>{t}</option>)}
               </select>
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
             </div>
@@ -189,7 +190,7 @@ const projectStages = ['Concept', 'Design Development', 'In Progress'];
                        focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
               >
                 <option value="" disabled selected></option>
-                {projectStages.map((s) => <option value={s}>{s}</option>)}
+                {projectStages.map((s: string) => <option value={s}>{s}</option>)}
               </select>
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
             </div>

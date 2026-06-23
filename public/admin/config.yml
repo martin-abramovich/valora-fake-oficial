@@ -1,0 +1,92 @@
+# local_backend: true
+# ↑ uncomment only for local development (together with `npm run cms`)
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: solutions
+    label: Solutions
+    label_singular: Solution
+    folder: src/content/solutions
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: order, label: Order, widget: number, hint: "1 = first displayed, 4 = last" }
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Description, widget: text }
+      - name: images
+        label: Images
+        widget: list
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt Text, widget: string }
+
+  - name: settings
+    label: Site Content
+    files:
+      - name: hero
+        label: Hero Section
+        file: src/content/settings/hero.json
+        fields:
+          - { name: headline_before_em, label: "Headline — start", widget: string, hint: 'e.g. "Mastery "' }
+          - { name: headline_em, label: "Headline — italic word", widget: string, hint: 'e.g. "in"' }
+          - { name: headline_after_em, label: "Headline — end", widget: string, hint: 'e.g. " every detail."' }
+          - { name: body, label: Body Text, widget: text, hint: "Each line break becomes a new line on screen" }
+          - { name: background_image, label: Background Image, widget: image }
+
+      - name: about
+        label: About Section
+        file: src/content/settings/about.json
+        fields:
+          - { name: eyebrow, label: Eyebrow Text, widget: string }
+          - { name: heading_before_em, label: "Heading — before italic", widget: string }
+          - { name: heading_em, label: "Heading — italic word", widget: string }
+          - { name: heading_after_em, label: "Heading — after italic", widget: string }
+          - name: paragraphs
+            label: Body Paragraphs
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: image, label: Image, widget: image }
+          - { name: image_alt, label: Image Alt Text, widget: string }
+
+      - name: team
+        label: Team Section
+        file: src/content/settings/team.json
+        fields:
+          - { name: heading, label: Heading, widget: string }
+          - { name: description, label: Description, widget: text }
+          - { name: image, label: Image, widget: image }
+          - { name: image_alt, label: Image Alt Text, widget: string }
+
+      - name: contact
+        label: Contact Section
+        file: src/content/settings/contact.json
+        fields:
+          - { name: heading_before_em, label: "Heading — before italic", widget: string }
+          - { name: heading_em, label: "Heading — italic word", widget: string }
+          - { name: body, label: Body Text, widget: text }
+          - name: roles
+            label: Role Options
+            widget: list
+            field: { name: value, label: Option, widget: string }
+          - name: project_types
+            label: Project Type Options
+            widget: list
+            field: { name: value, label: Option, widget: string }
+          - name: project_stages
+            label: Project Stage Options
+            widget: list
+            field: { name: value, label: Option, widget: string }
+
+      - name: footer
+        label: Footer
+        file: src/content/settings/footer.json
+        fields:
+          - { name: tagline, label: Tagline, widget: string, hint: 'Separate phrases with " · " (space · space)' }
+          - { name: background_image, label: Background Image, widget: image }

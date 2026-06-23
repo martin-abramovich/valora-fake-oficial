@@ -1,49 +1,8 @@
 ---
-const solutions = [
-  {
-    title: 'Custom Mirrors & LED:',
-    description:
-      'High-tier functionality meets art. We design and manufacture bespoke mirror solutions and next-generation LED systems with 100% domestic production.',
-    images: [
-      { src: '/images/solution-mirrors.webp',   alt: 'Custom backlit mirror in bathroom' },
-      { src: '/images/solution-mirrors-2.webp', alt: 'LED mirror close-up detail' },
-      { src: '/images/solution-mirrors-3.webp', alt: 'Custom mirror' },
-    ],
-  },
-  {
-    title: 'Acoustic Panels:',
-    description:
-      'Where design meets technical performance. Bespoke acoustic solutions that transform the materiality of a space while elevating its atmosphere.',
-    images: [
-      { src: '/images/solution-acoustic-3.png',   alt: 'Modern lobby with curved seating and illuminated acoustic panel wall design.' },
-      { src: '/images/solution-acoustic.webp', alt: 'Acoustic panel texture detail' },
-      { src: '/images/solution-acoustic-4.png', alt: 'Modern lounge with teal sofa and wave-pattern acoustic panel wall.' }
-    ],
-  },
-  {
-    title: 'Wallcoverings:',
-    description:
-      'Transforming surfaces into narratives. Custom-scale wallpapering designed to dialogue with the architecture.',
-    images: [
-      { src: '/images/solution-wallcovering.webp',   alt: 'Tropical mural wallcovering in bedroom' },
-      { src: '/images/solution-wallcovering-2.webp', alt: 'Wallcovering pattern detail' },
-      { src: '/images/solution-wallcovering-3.webp', alt: 'Wallcovering pattern detail' },
+import { getCollection } from 'astro:content';
 
-    ],
-  },
-  {
-    title: '3D Art & Commissions:',
-    description:
-      'Original work conceptualized in direct dialogue with the interior design, turning creative vision into tangible materiality.',
-    images: [
-      { src: '/images/solution-3d.webp',   alt: '3D art installation on hotel wall' },
-      { src: '/images/solution-3d-2.webp', alt: '3D art commission close-up' },
-      { src: '/images/solution-3d-3.webp', alt: '3D art commission close-up' },
-      { src: '/images/solution-3d-4.webp', alt: '3D art commission close-up' },
-      { src: '/images/solution-3d-5.2.png', alt: '3D art commission close-up' },
-    ],
-  },
-];
+const allSolutions = await getCollection('solutions');
+const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <section
@@ -63,13 +22,13 @@ const solutions = [
         <article class={`reveal delay-${(i % 4) * 100 + 100}`}>
 
           <!-- Slider -->
-          <div class="slider-wrap relative overflow-hidden aspect-4/3 mb-5" data-total={sol.images.length}>
+          <div class="slider-wrap relative overflow-hidden aspect-4/3 mb-5" data-total={sol.data.images.length}>
 
             <!-- Track width = n × 100% so each slide fills the visible area exactly -->
             <div class="slider-track flex h-full transition-transform duration-500 ease-out will-change-transform"
-                 style={`width: ${sol.images.length * 100}%`}>
-              {sol.images.map((img) => (
-                <div class="h-full flex-none overflow-hidden" style={`width: ${100 / sol.images.length}%`}>
+                 style={`width: ${sol.data.images.length * 100}%`}>
+              {sol.data.images.map((img) => (
+                <div class="h-full flex-none overflow-hidden" style={`width: ${100 / sol.data.images.length}%`}>
                   <img
                     src={img.src}
                     alt={img.alt}
@@ -110,11 +69,11 @@ const solutions = [
 
           <!-- Title -->
           <h3 class="font-heading text-dark text-xl md:text-2xl font-light mb-2">
-            {sol.title}
+            {sol.data.title}
           </h3>
           <!-- Description -->
           <p class="font-body text-dark/65 text-sm leading-relaxed">
-            {sol.description}
+            {sol.data.description}
           </p>
 
         </article>
