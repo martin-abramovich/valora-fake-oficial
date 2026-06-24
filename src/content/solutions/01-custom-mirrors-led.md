@@ -25,4 +25,14 @@ images:
     alt: Large round mirror with integrated LED
   - src: /images/chatgpt-image-jun-10-2026-09_51_55-am.png
     alt: Large round mirror
+  - src: /images/chatgpt-image-jun-8-2026-08_47_11-am.png
+    alt: "Custom mirror "
+  - src: /images/chatgpt-image-may-18-2026-03_42_05-pm.png
+    alt: Elegant restaurant seating
+  - src: /images/chatgpt-image-may-19-2026-08_20_41-am.png
+    alt: Moody hotel hallway
+  - src: /images/chatgpt-image-may-19-2026-08_49_16-am.png
+    alt: Bedroom with a cherry blossom mirror
+  - src: /images/chatgpt-image-may-19-2026-09_14_44-am.jpg
+    alt: Bedroom with a cherry blossom mirror
 ---
