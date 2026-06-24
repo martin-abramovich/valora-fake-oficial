@@ -11,6 +11,4 @@ images:
     alt: LED mirror close-up detail
   - src: /images/solution-mirrors-3.webp
     alt: Custom mirror
-  - src: /images/ejemplo.jpg
-    alt: example
 ---
