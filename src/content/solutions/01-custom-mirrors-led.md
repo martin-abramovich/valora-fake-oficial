@@ -13,4 +13,8 @@ images:
     alt: Custom mirror
   - src: /images/chatgpt-image-apr-17-2026-02_31_23-pm.webp
     alt: Custom mirror
+  - src: /images/teal-bathroom-with-pattern.webp
+    alt: Large round mirror with integrated LED
+  - src: /images/mirror-led-single-light-wood-vanity.png
+    alt: Large rectangular mirror
 ---
