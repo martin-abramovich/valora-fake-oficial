@@ -11,4 +11,6 @@ images:
     alt: LED mirror close-up detail
   - src: /images/solution-mirrors-3.webp
     alt: Custom mirror
+  - src: /images/chatgpt-image-apr-17-2026-02_31_23-pm.webp
+    alt: Custom mirror
 ---
