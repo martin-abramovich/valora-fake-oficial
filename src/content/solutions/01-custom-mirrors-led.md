@@ -67,4 +67,10 @@ images:
     alt: Twin gold-trimmed rectangular backlit mirrors.
   - src: /images/chatgpt-image-jun-10-2026-09_03_06-am.png
     alt: Twin gold-trimmed rectangular backlit mirrors.
+  - src: /images/chatgpt-image-may-18-2026-03_41_50-pm.png
+    alt: Teal tufted booth by a jungle mural mirror.
+  - src: /images/chatgpt-image-may-26-2026-10_57_11-am-2-.png
+    alt: Two tall rectangular backlit mirrors
+  - src: /images/rounded-tropical-mirror-for-postcard-1-.webp
+    alt: Rounded mirror
 ---
