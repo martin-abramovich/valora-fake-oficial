@@ -24,4 +24,20 @@ images:
     alt: Pastel geometric and floral design feature wall.
   - src: /images/coastal-serenity-with-ocean-view.jpeg
     alt: Soft muted floral wallpaper accent wall.
+  - src: /images/fabric-wall-covering-birds-1.png
+    alt: Chinoiserie bird and flower fabric wall covering.
+  - src: /images/fabric-wall-covering-birds-2.png
+    alt: Textured wall covering with flying crane pattern.
+  - src: /images/fabric-wall-covering-birds-3.png
+    alt: Hummingbird and floral print fabric feature wall.
+  - src: /images/fabric-wall-covering-birds-4.png
+    alt: Delicate botanical wall covering with small birds.
+  - src: /images/fabric-wall-covering-birds-5.png
+    alt: Sage green fabric wall covering with crane motif.
+  - src: /images/fabric-wall-covering-birds-6.png
+    alt: Warm floral and branch pattern wall covering.
+  - src: /images/fabric-wall-covering-floral.png
+    alt: Beige monochrome damask floral wall covering.
+  - src: /images/phomi-weave-bedroom.png
+    alt: "Woven textured feature wall "
 ---
