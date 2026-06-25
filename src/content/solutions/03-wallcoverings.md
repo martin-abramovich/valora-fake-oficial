@@ -40,4 +40,10 @@ images:
     alt: Beige monochrome damask floral wall covering.
   - src: /images/phomi-weave-bedroom.png
     alt: "Woven textured feature wall "
+  - src: /images/rustic-elegance-with-mountain-views.jpeg
+    alt: "Rustic sketch-style mountain mural "
+  - src: /images/spacious-bedroom-with-geometric-mural.png
+    alt: Colorful abstract geometric pattern wallpaper wall.
+  - src: /images/spacious-hotel-room-with-balcony-view.png
+    alt: Dark floral line art wallpaper behind two beds.
 ---
