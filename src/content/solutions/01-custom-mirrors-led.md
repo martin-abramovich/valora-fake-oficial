@@ -51,4 +51,20 @@ images:
     alt: Rectangular mirror.
   - src: /images/mirror-led-round-single.png
     alt: Large glowing circular mirror.
+  - src: /images/woven-wallcovering-bathroom.png
+    alt: Twin rectangular backlit mirrors.
+  - src: /images/chatgpt-image-apr-17-2026-12_22_42-pm.webp
+    alt: Circular backlit mirror
+  - src: /images/chatgpt-image-apr-21-2026-03_40_55-pm.png
+    alt: Square backlit mirror
+  - src: /images/chatgpt-image-jun-1-2026-10_31_48-am.png
+    alt: Organic-shaped full-length mirror
+  - src: /images/chatgpt-image-jun-1-2026-10_32_44-am.png
+    alt: Organic-shaped full-length mirror
+  - src: /images/chatgpt-image-jun-8-2026-08_32_19-am.png
+    alt: Vanity with a patterned mirror
+  - src: /images/chatgpt-image-jun-10-2026-08_58_35-am.png
+    alt: Twin gold-trimmed rectangular backlit mirrors.
+  - src: /images/chatgpt-image-jun-10-2026-09_03_06-am.png
+    alt: Twin gold-trimmed rectangular backlit mirrors.
 ---
