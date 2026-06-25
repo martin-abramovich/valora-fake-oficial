@@ -35,4 +35,20 @@ images:
     alt: Bedroom with a cherry blossom mirror
   - src: /images/chatgpt-image-may-19-2026-09_14_44-am.jpg
     alt: Bedroom with a cherry blossom mirror
+  - src: /images/chatgpt-image-may-19-2026-10_29_11-am.png
+    alt: Dining set and gridded mirror wall.
+  - src: /images/chatgpt-image-may-26-2026-10_57_12-am-5-.png
+    alt: Luxury marble bathroom with twin backlit mirrors.
+  - src: /images/chatgpt-image-may-26-2026-11_09_58-am.png
+    alt: Large rectangular LED-backlit mirror.
+  - src: /images/chatgpt-image-may-26-2026-11_45_34-am-2-.png
+    alt: Double vanity and two glowing oval mirrors.
+  - src: /images/chatgpt-image-may-26-2026-11_45_36-am-3-.png
+    alt: Single backlit rectangular mirror.
+  - src: /images/chatgpt-image-may-26-2026-11_45_36-am-5-.png
+    alt: A round backlit mirror, and a glass shower.
+  - src: /images/chatgpt-image-may-26-2026-11_50_29-am-4-.jpg
+    alt: Rectangular mirror.
+  - src: /images/mirror-led-round-single.png
+    alt: Large glowing circular mirror.
 ---
