@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 4
 title: Fine Art Curation
 description: Elevating interior narratives through curated visual expression.
   Custom-scaled art collections and statement pieces meticulously selected to
