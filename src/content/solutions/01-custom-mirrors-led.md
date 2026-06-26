@@ -11,8 +11,6 @@ images:
     alt: LED mirror close-up detail
   - src: /images/solution-mirrors-3.webp
     alt: Custom mirror
-  - src: /images/chatgpt-image-apr-17-2026-02_31_23-pm.webp
-    alt: Custom mirror
   - src: /images/teal-bathroom-with-pattern.webp
     alt: Large round mirror with integrated LED
   - src: /images/mirror-led-single-light-wood-vanity.png
@@ -23,20 +21,18 @@ images:
     alt: Two round backlit mirrors.
   - src: /images/chatgpt-image-jun-10-2026-09_13_13-am.png
     alt: Large round mirror with integrated LED
-  - src: /images/chatgpt-image-jun-10-2026-09_51_55-am.png
-    alt: Large round mirror
   - src: /images/chatgpt-image-jun-8-2026-08_47_11-am.png
     alt: "Custom mirror "
   - src: /images/chatgpt-image-may-18-2026-03_42_05-pm.png
     alt: Elegant restaurant seating
   - src: /images/chatgpt-image-may-19-2026-08_20_41-am.png
     alt: Moody hotel hallway
-  - src: /images/chatgpt-image-may-19-2026-08_49_16-am.png
-    alt: Bedroom with a cherry blossom mirror
   - src: /images/chatgpt-image-may-19-2026-09_14_44-am.jpg
     alt: Bedroom with a cherry blossom mirror
   - src: /images/chatgpt-image-may-19-2026-10_29_11-am.png
     alt: Dining set and gridded mirror wall.
+  - src: /images/chatgpt-image-jun-1-2026-10_31_48-am.png
+    alt: Organic-shaped full-length mirror
   - src: /images/chatgpt-image-may-26-2026-10_57_12-am-5-.png
     alt: Luxury marble bathroom with twin backlit mirrors.
   - src: /images/chatgpt-image-may-26-2026-11_09_58-am.png
@@ -47,6 +43,8 @@ images:
     alt: Single backlit rectangular mirror.
   - src: /images/chatgpt-image-may-26-2026-11_45_36-am-5-.png
     alt: A round backlit mirror, and a glass shower.
+  - src: /images/chatgpt-image-jun-10-2026-09_51_55-am.png
+    alt: Large round mirror
   - src: /images/chatgpt-image-may-26-2026-11_50_29-am-4-.jpg
     alt: Rectangular mirror.
   - src: /images/mirror-led-round-single.png
@@ -57,8 +55,6 @@ images:
     alt: Circular backlit mirror
   - src: /images/chatgpt-image-apr-21-2026-03_40_55-pm.png
     alt: Square backlit mirror
-  - src: /images/chatgpt-image-jun-1-2026-10_31_48-am.png
-    alt: Organic-shaped full-length mirror
   - src: /images/chatgpt-image-jun-1-2026-10_32_44-am.png
     alt: Organic-shaped full-length mirror
   - src: /images/chatgpt-image-jun-8-2026-08_32_19-am.png
@@ -69,8 +65,10 @@ images:
     alt: Twin gold-trimmed rectangular backlit mirrors.
   - src: /images/chatgpt-image-may-18-2026-03_41_50-pm.png
     alt: Teal tufted booth by a jungle mural mirror.
-  - src: /images/chatgpt-image-may-26-2026-10_57_11-am-2-.png
-    alt: Two tall rectangular backlit mirrors
   - src: /images/rounded-tropical-mirror-for-postcard-1-.webp
     alt: Rounded mirror
+  - src: /images/chatgpt-image-may-26-2026-10_57_11-am-2-.png
+    alt: Two tall rectangular backlit mirrors
+  - src: /images/chatgpt-image-may-19-2026-08_49_16-am.png
+    alt: Bedroom with a cherry blossom mirror
 ---
