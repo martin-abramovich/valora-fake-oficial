@@ -25,4 +25,10 @@ images:
     alt: Abstract landscape painting.
   - src: /images/chatgpt-image-may-22-2026-11_26_16-am.png
     alt: Blue and green abstract framed prints.
+  - src: /images/chatgpt-image-may-22-2026-11_47_44-am.png
+    alt: Pair of square abstract framed paintings.
+  - src: /images/chatgpt-image-may-22-2026-12_05_26-pm.png
+    alt: Framed geometric abstract painting.
+  - src: /images/elegant-urban-hotel-bedroom-at-night.png
+    alt: Two geometric black and gold abstract paintings.
 ---
