@@ -14,8 +14,6 @@ images:
     alt: 3D art commission close-up
   - src: /images/solution-3d-5.2.png
     alt: 3D art commission close-up
-  - src: /images/chatgpt-image-apr-23-2026-03_47_28-pm.webp
-    alt: Teal glass square abstract wall art sculpture.
   - src: /images/chatgpt-image-jun-8-2026-10_28_08-am.png
     alt: Large flowing wave carved wood wall sculpture.
   - src: /images/chatgpt-image-may-13-2026-09_01_08-am.png
