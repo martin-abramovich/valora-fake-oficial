@@ -5,8 +5,8 @@ description: Where structural flexibility meets rich tactile dimension. Bespoke
   three-dimensional printable surfaces designed to seamlessly wrap complex
   curves and columns.
 images:
-  - src: /images/rustic-serenity-at-a-colorado-ranch.png
-    alt: Rustic serenity
+  - src: /images/chatgpt-image-may-20-2026-03_35_07-pm.png
+    alt: Green and white striped weave and white barstools
   - src: /images/chatgpt-image-may-1-2026-09_55_16-am.png
     alt: "Abstract artwork "
   - src: /images/chatgpt-image-apr-23-2026-03_37_52-pm.webp
@@ -27,6 +27,4 @@ images:
     alt: Woven wall featuring a three-fish mural.
   - src: /images/chatgpt-image-apr-27-2026-12_36_59-pm.png
     alt: Curved cream sofa and a textured woven wall.
-  - src: /images/chatgpt-image-may-20-2026-03_35_07-pm.png
-    alt: Green and white striped weave and white barstools
 ---
