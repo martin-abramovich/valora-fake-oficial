@@ -7,8 +7,6 @@ description: High-tier functionality meets art. We design and manufacture
 images:
   - src: /images/solution-mirrors.webp
     alt: Custom backlit mirror in bathroom
-  - src: /images/solution-mirrors-2.webp
-    alt: LED mirror close-up detail
   - src: /images/solution-mirrors-3.webp
     alt: Custom mirror
   - src: /images/teal-bathroom-with-pattern.webp
@@ -51,22 +49,14 @@ images:
     alt: Large glowing circular mirror.
   - src: /images/woven-wallcovering-bathroom.png
     alt: Twin rectangular backlit mirrors.
-  - src: /images/chatgpt-image-apr-17-2026-12_22_42-pm.webp
-    alt: Circular backlit mirror
   - src: /images/chatgpt-image-apr-21-2026-03_40_55-pm.png
     alt: Square backlit mirror
-  - src: /images/chatgpt-image-jun-1-2026-10_32_44-am.png
-    alt: Organic-shaped full-length mirror
   - src: /images/chatgpt-image-jun-8-2026-08_32_19-am.png
     alt: Vanity with a patterned mirror
   - src: /images/chatgpt-image-jun-10-2026-08_58_35-am.png
     alt: Twin gold-trimmed rectangular backlit mirrors.
-  - src: /images/chatgpt-image-jun-10-2026-09_03_06-am.png
-    alt: Twin gold-trimmed rectangular backlit mirrors.
   - src: /images/chatgpt-image-may-18-2026-03_41_50-pm.png
     alt: Teal tufted booth by a jungle mural mirror.
-  - src: /images/rounded-tropical-mirror-for-postcard-1-.webp
-    alt: Rounded mirror
   - src: /images/chatgpt-image-may-26-2026-10_57_11-am-2-.png
     alt: Two tall rectangular backlit mirrors
   - src: /images/chatgpt-image-may-19-2026-08_49_16-am.png
