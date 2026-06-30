@@ -8,10 +8,6 @@ images:
   - src: /images/solution-acoustic-3.png
     alt: Modern lobby with curved seating and illuminated acoustic panel wall
       design.
-  - src: /images/solution-acoustic.webp
-    alt: Acoustic panel texture detail
-  - src: /images/solution-acoustic-4.png
-    alt: Modern lounge with teal sofa and wave-pattern acoustic panel wall.
   - src: /images/acoustic-panel-breakfast-room.png
     alt: Patterned geometric acoustic wall panels.
   - src: /images/acoustic-panel-coastal-bedroom-1.png
