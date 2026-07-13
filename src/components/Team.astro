@@ -1,5 +1,6 @@
 ---
 import teamData from '../content/settings/team.json';
+import { netlifyImage } from '../lib/netlifyImage';
 ---
 
 <section
@@ -13,7 +14,7 @@ import teamData from '../content/settings/team.json';
       <!-- Mobile: fixed 4/3 ratio — Desktop: fills full section height (no fixed ratio) -->
       <div class="relative overflow-hidden aspect-4/3 md:aspect-auto md:h-full">
         <img
-          src={teamData.image}
+          src={netlifyImage(teamData.image, { width: 1200 })}
           alt={teamData.image_alt}
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy"

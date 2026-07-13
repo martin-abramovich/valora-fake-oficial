@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { netlifyImage } from '../lib/netlifyImage';
 
 const allSolutions = await getCollection('solutions');
 const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
@@ -30,7 +31,7 @@ const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
               {sol.data.images.map((img) => (
                 <div class="h-full flex-none overflow-hidden" style={`width: ${100 / sol.data.images.length}%`}>
                   <img
-                    src={img.src}
+                    src={netlifyImage(img.src, { width: 800 })}
                     alt={img.alt}
                     class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     loading="lazy"

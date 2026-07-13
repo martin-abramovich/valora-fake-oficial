@@ -1,7 +1,9 @@
 ---
 import footerData from '../content/settings/footer.json';
+import { netlifyImage } from '../lib/netlifyImage';
 
 const taglineParts = footerData.tagline.split(' · ');
+const backgroundImage = netlifyImage(footerData.background_image, { width: 1600 });
 ---
 
 <footer>
@@ -9,7 +11,7 @@ const taglineParts = footerData.tagline.split(' · ');
   <!-- Upper block: full-width background photo + logo -->
   <div
     class="relative h-30 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-    style={`background-image: url('${footerData.background_image}');`}
+    style={`background-image: url('${backgroundImage}');`}
   >
     <!-- Dark overlay -->
     <div class="absolute inset-0 bg-dark/50" />

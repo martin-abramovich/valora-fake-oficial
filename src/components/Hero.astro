@@ -1,7 +1,9 @@
 ---
 import heroData from '../content/settings/hero.json';
+import { netlifyImage } from '../lib/netlifyImage';
 
 const bodyLines = heroData.body.split('\n');
+const backgroundImage = netlifyImage(heroData.background_image, { width: 1920 });
 ---
 
 <section
@@ -10,7 +12,7 @@ const bodyLines = heroData.body.split('\n');
 >
   <div
     class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style={`background-image: url('${heroData.background_image}');`}
+    style={`background-image: url('${backgroundImage}');`}
     aria-hidden="true"
   >
     <!-- Dark gradient overlay -->

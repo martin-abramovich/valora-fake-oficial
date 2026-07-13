@@ -1,5 +1,6 @@
 ---
 import aboutData from '../content/settings/about.json';
+import { netlifyImage } from '../lib/netlifyImage';
 ---
 
 <section
@@ -32,7 +33,7 @@ import aboutData from '../content/settings/about.json';
     <div class="reveal slide-right delay-200 px-6 md:px-0 md:shrink-0 md:w-[45%]">
       <div class="relative overflow-hidden aspect-5/4">
         <img
-          src={aboutData.image}
+          src={netlifyImage(aboutData.image, { width: 1200 })}
           alt={aboutData.image_alt}
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy"
