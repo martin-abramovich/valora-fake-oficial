@@ -1,5 +1,5 @@
 /**
- * Canonical list of sales-rep regions shown on the /contact tile-grid map.
+ * Canonical list of sales-rep regions shown on the /team tile-grid map.
  * `row`/`col` place each tile on a stylized (non-geographic) grid, in the
  * spirit of NPR-style US tile-grid maps — every US state gets exactly one
  * cell, except Nevada and New York, which are split into the two rep
@@ -76,7 +76,7 @@ export const US_REGIONS: UsRegion[] = [
 
   { code: 'FL',    label: 'Florida',                 row: 7, col: 7 },
 
-  { code: 'HI',    label: 'Hawaii',                  row: 8, col: 0 },
+  { code: 'HI',    label: 'Hawaii',                  row: 4, col: 1 },
 ];
 
 export const US_GRID_ROWS = Math.max(...US_REGIONS.map((r) => r.row)) + 1;

@@ -8,15 +8,19 @@ export interface Props {
 
 const { solid = false } = Astro.props;
 
-const navLinks = [
+// Rendered around the Team link, which gets an extra hover dropdown to the rep locator.
+const navLinksBeforeTeam = [
   { label: 'Home',              href: '/#hero' },
   { label: 'About',             href: '/#about' },
-  { label: 'Bespoke solutions', href: '/#solutions' },
   { label: 'Art Curation',      href: '/#art-curation' },
-  { label: 'Team',              href: '/#team' },
-  { label: 'Blog',              href: '/blog' },
-  { label: 'Contact',           href: '/#contact' },
+  { label: 'Bespoke solutions', href: '/#solutions' },
 ];
+const navLinksAfterTeam = [
+  { label: 'Blog',    href: '/blog' },
+  { label: 'Contact', href: '/#contact' },
+];
+const teamLink = { label: 'Team', href: '/#team' };
+const findRepLink = { label: 'Find your rep', href: '/team#reps' };
 ---
 
 <header
@@ -31,7 +35,41 @@ const navLinks = [
 
   <!-- Desktop nav -->
   <nav class="hidden md:flex items-center gap-8">
-    {navLinks.map((link) => (
+    {navLinksBeforeTeam.map((link) => (
+      <a
+        href={link.href}
+        class="font-heading text-lg text-cream/90 hover:text-cream tracking-wide transition-colors duration-200 relative group"
+      >
+        {link.label}
+        <span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gold group-hover:w-full transition-all duration-300" />
+      </a>
+    ))}
+
+    <!-- Team: hover reveals a dropdown straight to the rep locator -->
+    <div class="relative group/team">
+      <a
+        href={teamLink.href}
+        class="font-heading text-lg text-cream/90 hover:text-cream tracking-wide transition-colors duration-200 relative group"
+      >
+        {teamLink.label}
+        <span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gold group-hover:w-full transition-all duration-300" />
+      </a>
+      <div
+        class="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible translate-y-1
+               group-hover/team:opacity-100 group-hover/team:visible group-hover/team:translate-y-0
+               transition-all duration-200"
+      >
+        <a
+          href={findRepLink.href}
+          class="block whitespace-nowrap bg-teal/95 backdrop-blur-lg shadow-md px-5 py-3
+                 font-heading text-base text-cream/90 hover:text-cream transition-colors duration-200"
+        >
+          {findRepLink.label}
+        </a>
+      </div>
+    </div>
+
+    {navLinksAfterTeam.map((link) => (
       <a
         href={link.href}
         class="font-heading text-lg text-cream/90 hover:text-cream tracking-wide transition-colors duration-200 relative group"
@@ -58,9 +96,31 @@ const navLinks = [
 <div
   id="mobile-menu"
   class="fixed inset-0 z-40 bg-teal/90 backdrop-blur-lg flex flex-col items-center justify-center gap-8
-         translate-x-full transition-transform duration-500 md:hidden"
+         translate-x-full transition-transform duration-500 md:hidden overflow-y-auto py-16"
 >
-  {navLinks.map((link) => (
+  {navLinksBeforeTeam.map((link) => (
+    <a
+      href={link.href}
+      class="mobile-link font-heading text-[2.156rem] text-cream/90 hover:text-gold transition-colors duration-200"
+    >
+      {link.label}
+    </a>
+  ))}
+
+  <a
+    href={teamLink.href}
+    class="mobile-link font-heading text-[2.156rem] text-cream/90 hover:text-gold transition-colors duration-200"
+  >
+    {teamLink.label}
+  </a>
+  <a
+    href={findRepLink.href}
+    class="mobile-link font-heading text-lg tracking-widest2 uppercase text-cream/70 hover:text-gold transition-colors duration-200 -mt-6"
+  >
+    {findRepLink.label}
+  </a>
+
+  {navLinksAfterTeam.map((link) => (
     <a
       href={link.href}
       class="mobile-link font-heading text-[2.156rem] text-cream/90 hover:text-gold transition-colors duration-200"

@@ -27,7 +27,7 @@
   }
 
   /* Offsets anchor scrolling so section headings don't land under the fixed navbar. */
-  #about, #solutions, #art-curation, #team, #contact {
+  #about, #solutions, #art-curation, #team, #contact, #reps {
     scroll-margin-top: 110px;
   }
 }
