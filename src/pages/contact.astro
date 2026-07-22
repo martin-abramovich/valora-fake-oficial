@@ -1,0 +1,258 @@
+---
+import { getCollection } from 'astro:content';
+import SolutionLayout from '../layouts/SolutionLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { US_REGIONS, US_GRID_ROWS, US_GRID_COLS, CANADA_REGION } from '../lib/usRegions';
+
+const allReps = await getCollection('reps');
+
+// One rep can cover several region codes (e.g. Alaska + Arkansas + Colorado),
+// so we invert their `regions` lists into a single code → rep lookup.
+const repByCode = new Map<string, (typeof allReps)[number]['data']>();
+for (const rep of allReps) {
+  for (const code of rep.data.regions) {
+    repByCode.set(code, rep.data);
+  }
+}
+
+const tiles = US_REGIONS.map((region) => ({
+  ...region,
+  rep: repByCode.get(region.code) ?? null,
+}));
+
+const canadaRep = repByCode.get(CANADA_REGION.code) ?? null;
+
+// Fed to the client script so tile clicks / the dropdown can update the panel without a page reload.
+const regionData = Object.fromEntries(
+  [...tiles, { ...CANADA_REGION, rep: canadaRep }].map((r) => [r.code, { label: r.label, rep: r.rep }])
+);
+---
+
+<SolutionLayout title="Contact — Valora" description="Share your project details, or find the Valora sales representative for your region.">
+
+  <!-- Title band -->
+  <section class="bg-dark pt-40 pb-20 md:pt-48 md:pb-24 px-6 md:px-16">
+    <div class="max-w-4xl mx-auto">
+      <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
+        Valora
+      </p>
+      <h1 class="reveal font-heading text-cream text-5xl md:text-7xl font-light leading-[1.05] mb-6 delay-100">
+        Contact
+      </h1>
+      <p class="reveal font-body text-cream/80 text-sm md:text-base leading-relaxed max-w-2xl delay-200">
+        Share the project details below, or find the representative who covers your region.
+      </p>
+    </div>
+  </section>
+
+  <!-- Rep locator -->
+  <section class="bg-cream py-16 md:py-20 px-6 md:px-16">
+    <div class="max-w-7xl mx-auto">
+      <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-4">
+        Find Your Rep
+      </p>
+      <h2 class="reveal font-heading text-dark text-3xl md:text-4xl font-light leading-[1.2] mb-4 delay-100 max-w-2xl">
+        Every region has a dedicated representative.
+      </h2>
+      <p class="reveal font-body text-dark/70 text-sm md:text-base leading-relaxed mb-10 max-w-2xl delay-200">
+        Select a region on the map — or use the dropdown — to see who to reach out to directly.
+      </p>
+
+      <div class="reveal delay-300 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 items-start">
+
+        <!-- Map -->
+        <div>
+          <!-- Accessible / mobile-friendly alternative to clicking tiles -->
+          <div class="mb-6 max-w-sm">
+            <label class="font-body text-xs text-dark/60 tracking-wide" for="region-select">
+              Or choose your region
+            </label>
+            <div class="relative mt-1">
+              <select
+                id="region-select"
+                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
+                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
+              >
+                <option value="" selected disabled>Select a region…</option>
+                {tiles.map((t) => <option value={t.code}>{t.label}</option>)}
+                <option value={CANADA_REGION.code}>{CANADA_REGION.label}</option>
+              </select>
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
+            </div>
+          </div>
+
+          <div
+            class="region-grid grid gap-1"
+            style={`grid-template-columns: repeat(${US_GRID_COLS}, minmax(0, 1fr)); grid-template-rows: repeat(${US_GRID_ROWS}, minmax(0, 1fr));`}
+          >
+            {tiles.map((t) => (
+              <button
+                type="button"
+                class={`region-tile aspect-square flex items-center justify-center border text-center transition-colors duration-200
+                        font-body text-[9px] md:text-[10px] tracking-wide uppercase leading-tight px-0.5
+                        ${t.rep ? 'border-teal/50 bg-teal/10 text-teal hover:bg-teal hover:text-cream' : 'border-dark/15 bg-dark/5 text-dark/40 hover:border-dark/30'}`}
+                style={`grid-column: ${t.col + 1}; grid-row: ${t.row + 1};`}
+                data-code={t.code}
+                aria-label={t.label}
+              >
+                {t.code}
+              </button>
+            ))}
+          </div>
+
+          <!-- Legend -->
+          <div class="flex items-center gap-6 mt-5">
+            <span class="flex items-center gap-2 font-body text-[11px] text-dark/60 uppercase tracking-wide">
+              <span class="w-3 h-3 border border-teal/50 bg-teal/10"></span> Rep assigned
+            </span>
+            <span class="flex items-center gap-2 font-body text-[11px] text-dark/60 uppercase tracking-wide">
+              <span class="w-3 h-3 border border-dark/15 bg-dark/5"></span> Coming soon
+            </span>
+          </div>
+
+          <!-- Canada — not part of the US grid, listed alongside it -->
+          <div class="mt-6">
+            <button
+              type="button"
+              data-code={CANADA_REGION.code}
+              class={`region-tile inline-flex items-center gap-2 border px-4 py-2.5 transition-colors duration-200
+                      font-body text-xs tracking-widest2 uppercase
+                      ${canadaRep ? 'border-teal/50 bg-teal/10 text-teal hover:bg-teal hover:text-cream' : 'border-dark/15 bg-dark/5 text-dark/40 hover:border-dark/30'}`}
+            >
+              {CANADA_REGION.label}
+            </button>
+          </div>
+        </div>
+
+        <!-- Rep panel -->
+        <div id="rep-panel" class="border border-dark/15 bg-white p-8 min-h-[260px] flex flex-col justify-center">
+          <p id="rep-panel-empty" class="font-body text-dark/50 text-sm leading-relaxed">
+            Select a region on the map or from the dropdown to see the representative for that area.
+          </p>
+
+          <div id="rep-panel-content" class="hidden">
+            <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-3" id="rep-panel-region"></p>
+            <h3 class="font-heading text-dark text-2xl font-light leading-tight mb-4" id="rep-panel-name"></h3>
+            <dl class="space-y-3 font-body text-sm">
+              <div>
+                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Company</dt>
+                <dd class="text-dark" id="rep-panel-company"></dd>
+              </div>
+              <div>
+                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Email</dt>
+                <dd><a class="text-teal hover:underline" id="rep-panel-email"></a></dd>
+              </div>
+              <div>
+                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Phone</dt>
+                <dd><a class="text-teal hover:underline" id="rep-panel-phone"></a></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div id="rep-panel-pending" class="hidden">
+            <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-3" id="rep-panel-pending-region"></p>
+            <p class="font-body text-dark/60 text-sm leading-relaxed">
+              We're still assigning a dedicated representative for this region. Reach out through the form below and we'll route your inquiry directly.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <script type="application/json" id="region-data" set:html={JSON.stringify(regionData)} />
+    </div>
+  </section>
+
+  <!-- Contact form -->
+  <section class="bg-white py-16 md:py-20 px-6 md:px-16 border-t border-dark/10">
+    <div class="max-w-3xl mx-auto">
+      <span class="ornament reveal block mb-5 text-gold text-sm" aria-hidden="true">✦</span>
+      <h2 class="reveal font-heading text-dark text-3xl md:text-4xl font-light leading-[1.1] mb-8 delay-100">
+        Or send us the details directly.
+      </h2>
+      <div class="reveal delay-200">
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+
+</SolutionLayout>
+
+<script>
+  interface RepData {
+    name: string;
+    company: string;
+    email: string;
+    phone: string;
+  }
+  interface RegionEntry {
+    label: string;
+    rep: RepData | null;
+  }
+
+  const dataEl = document.getElementById('region-data');
+  const regionData: Record<string, RegionEntry> = dataEl ? JSON.parse(dataEl.textContent ?? '{}') : {};
+
+  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('.region-tile'));
+  const select = document.getElementById('region-select') as HTMLSelectElement | null;
+
+  const panelEmpty   = document.getElementById('rep-panel-empty');
+  const panelContent = document.getElementById('rep-panel-content');
+  const panelPending  = document.getElementById('rep-panel-pending');
+
+  const elRegion  = document.getElementById('rep-panel-region');
+  const elName    = document.getElementById('rep-panel-name');
+  const elCompany = document.getElementById('rep-panel-company');
+  const elEmail   = document.getElementById('rep-panel-email') as HTMLAnchorElement | null;
+  const elPhone   = document.getElementById('rep-panel-phone') as HTMLAnchorElement | null;
+  const elPendingRegion = document.getElementById('rep-panel-pending-region');
+
+  function selectRegion(code: string) {
+    const entry = regionData[code];
+    if (!entry) return;
+
+    tiles.forEach((t) => t.classList.toggle('is-active', t.dataset.code === code));
+    if (select) select.value = code;
+
+    panelEmpty?.classList.add('hidden');
+
+    if (entry.rep) {
+      panelPending?.classList.add('hidden');
+      panelContent?.classList.remove('hidden');
+
+      if (elRegion) elRegion.textContent = entry.label;
+      if (elName) elName.textContent = entry.rep.name;
+      if (elCompany) elCompany.textContent = entry.rep.company;
+      if (elEmail) {
+        elEmail.textContent = entry.rep.email;
+        elEmail.href = `mailto:${entry.rep.email}`;
+      }
+      if (elPhone) {
+        elPhone.textContent = entry.rep.phone;
+        elPhone.href = `tel:${entry.rep.phone.replace(/[^\d+]/g, '')}`;
+      }
+    } else {
+      panelContent?.classList.add('hidden');
+      panelPending?.classList.remove('hidden');
+      if (elPendingRegion) elPendingRegion.textContent = entry.label;
+    }
+  }
+
+  tiles.forEach((tile) => {
+    tile.addEventListener('click', () => {
+      if (tile.dataset.code) selectRegion(tile.dataset.code);
+    });
+  });
+
+  select?.addEventListener('change', () => {
+    if (select.value) selectRegion(select.value);
+  });
+</script>
+
+<style>
+  .region-tile.is-active {
+    background-color: var(--color-teal);
+    color: var(--color-cream);
+    border-color: var(--color-teal);
+  }
+</style>

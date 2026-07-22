@@ -1,4 +1,4 @@
-# local_backend: true
+local_backend: true
 # ↑ uncomment only for local development (together with `npm run cms`)
 
 backend:
@@ -17,7 +17,7 @@ collections:
     extension: md
     slug: "{{slug}}"
     fields:
-      - { name: order, label: Order, widget: number, hint: "1 = first displayed, 4 = last" }
+      - { name: order, label: Order, widget: number, hint: "Position in the 3-column grid (1 = first, 6 = last)" }
       - { name: title, label: Title, widget: string }
       - { name: description, label: Description, widget: text }
       - name: images
@@ -26,6 +26,116 @@ collections:
         fields:
           - { name: src, label: Image, widget: image }
           - { name: alt, label: Alt Text, widget: string }
+          - { name: tag, label: Subcategory Tag, widget: string, required: false, hint: "e.g. Metal, Wood, Art — used as the filter on the solution's page. Leave blank to exclude from filtering." }
+      - name: documents
+        label: Technical Documents
+        widget: list
+        required: false
+        hint: "PDFs or spec sheets shown as download buttons on the solution's page"
+        fields:
+          - { name: label, label: Button Label, widget: string, hint: 'e.g. "Metal Frames — Spec Sheet"' }
+          - { name: file, label: File, widget: file }
+
+  - name: team
+    label: Team
+    label_singular: Team Member
+    folder: src/content/team
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: order, label: Order, widget: number, hint: "Position on the Team page (1 = first)" }
+      - { name: name, label: Name, widget: string }
+      - { name: role, label: Role / Title, widget: string }
+      - { name: photo, label: Photo, widget: image, required: false, hint: "Leave blank to show an initials placeholder" }
+      - { name: bio, label: Short Bio, widget: text, required: false }
+
+  - name: reps
+    label: Sales Reps
+    label_singular: Rep
+    folder: src/content/reps
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: name, label: Rep Name, widget: string }
+      - { name: company, label: Company, widget: string }
+      - { name: email, label: Email, widget: string }
+      - { name: phone, label: Telephone Number, widget: string }
+      - name: regions
+        label: Regions Covered
+        widget: select
+        multiple: true
+        hint: "Every region this rep is responsible for — one rep can cover several"
+        options:
+          - { label: Alabama, value: AL }
+          - { label: Alaska, value: AK }
+          - { label: Arizona, value: AZ }
+          - { label: Arkansas, value: AR }
+          - { label: California, value: CA }
+          - { label: Canada, value: CANADA }
+          - { label: Colorado, value: CO }
+          - { label: Connecticut, value: CT }
+          - { label: Delaware, value: DE }
+          - { label: Florida, value: FL }
+          - { label: Georgia, value: GA }
+          - { label: Hawaii, value: HI }
+          - { label: Idaho, value: ID }
+          - { label: Illinois, value: IL }
+          - { label: Indiana, value: IN }
+          - { label: Iowa, value: IA }
+          - { label: Kansas, value: KS }
+          - { label: Kentucky, value: KY }
+          - { label: Louisiana, value: LA }
+          - { label: Maine, value: ME }
+          - { label: Maryland, value: MD }
+          - { label: Massachusetts, value: MA }
+          - { label: Michigan, value: MI }
+          - { label: Minnesota, value: MN }
+          - { label: Mississippi, value: MS }
+          - { label: Missouri, value: MO }
+          - { label: Montana, value: MT }
+          - { label: Nebraska, value: NE }
+          - { label: "Nevada (Las Vegas)", value: NV-LV }
+          - { label: "Nevada (Northern)", value: NV-N }
+          - { label: New Hampshire, value: NH }
+          - { label: New Jersey, value: NJ }
+          - { label: New Mexico, value: NM }
+          - { label: "New York (North)", value: NY-N }
+          - { label: "New York (South)", value: NY-S }
+          - { label: North Carolina, value: NC }
+          - { label: North Dakota, value: ND }
+          - { label: Ohio, value: OH }
+          - { label: Oklahoma, value: OK }
+          - { label: Oregon, value: OR }
+          - { label: Pennsylvania, value: PA }
+          - { label: Rhode Island, value: RI }
+          - { label: South Carolina, value: SC }
+          - { label: South Dakota, value: SD }
+          - { label: Tennessee, value: TN }
+          - { label: Texas, value: TX }
+          - { label: Utah, value: UT }
+          - { label: Vermont, value: VT }
+          - { label: Virginia, value: VA }
+          - { label: Washington, value: WA }
+          - { label: "Washington D.C.", value: DC }
+          - { label: West Virginia, value: WV }
+          - { label: Wisconsin, value: WI }
+          - { label: Wyoming, value: WY }
+
+  - name: blog
+    label: Blog
+    label_singular: Post
+    folder: src/content/blog
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: image, label: Photo, widget: image }
+      - { name: image_alt, label: Photo Alt Text, widget: string, required: false }
+      - { name: date, label: Date, widget: datetime }
+      - { name: body, label: Body, widget: markdown }
 
   - name: settings
     label: Site Content
@@ -38,11 +148,39 @@ collections:
           - { name: headline_em, label: "Headline — italic word", widget: string, hint: 'e.g. "in"' }
           - { name: headline_after_em, label: "Headline — end", widget: string, hint: 'e.g. " every detail."' }
           - { name: body, label: Body Text, widget: text, hint: "Each line break becomes a new line on screen" }
-          - { name: background_image, label: Background Image, widget: image }
+          - name: background_images
+            label: Background Images (slider)
+            widget: list
+            min: 1
+            hint: "Rotates automatically every 5 seconds, in order. Add as many as you want."
+            field: { name: src, label: Image, widget: image }
 
       - name: about
         label: About Section
         file: src/content/settings/about.json
+        fields:
+          - { name: eyebrow, label: Eyebrow Text, widget: string }
+          - { name: heading_before_em, label: "Heading — before italic", widget: string }
+          - { name: heading_em, label: "Heading — italic word", widget: string }
+          - { name: heading_after_em, label: "Heading — after italic", widget: string }
+          - name: paragraphs
+            label: Body Paragraphs
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: image, label: Image, widget: image }
+          - { name: image_alt, label: Image Alt Text, widget: string }
+          - { name: dark_subtitle, label: "About Page — Chapter 1 Subtitle", widget: string }
+          - { name: dark_body, label: "About Page — Chapter 1 Body", widget: text }
+          - { name: dark_image, label: "About Page — Chapter 1 Background Photo", widget: image, hint: "Full-bleed photo behind the sticky text panel as the visitor scrolls" }
+          - { name: dark_image_alt, label: "About Page — Chapter 1 Photo Alt Text", widget: string }
+          - { name: page_subtitle, label: "About Page — Chapter 2 Subtitle", widget: string }
+          - { name: page_body, label: "About Page — Chapter 2 Body", widget: text }
+          - { name: page_image, label: "About Page — Chapter 2 Background Photo", widget: image, hint: "Full-bleed photo behind the sticky text panel as the visitor scrolls" }
+          - { name: page_image_alt, label: "About Page — Chapter 2 Photo Alt Text", widget: string }
+
+      - name: art-curation
+        label: Art Curation Section
+        file: src/content/settings/art-curation.json
         fields:
           - { name: eyebrow, label: Eyebrow Text, widget: string }
           - { name: heading_before_em, label: "Heading — before italic", widget: string }

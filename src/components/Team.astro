@@ -16,10 +16,19 @@ import { netlifyImage } from '../lib/netlifyImage';
         <img
           src={netlifyImage(teamData.image, { width: 1200 })}
           alt={teamData.image_alt}
-          class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+          class="w-full h-full object-cover"
           loading="lazy"
         />
         <div class="absolute top-0 right-0 w-1 h-full bg-teal/30 pointer-events-none" />
+
+        <!-- Gradient scrim so the button stays legible over any photo -->
+        <div class="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-dark/85 via-dark/20 to-transparent pointer-events-none" />
+
+        <div class="absolute bottom-8 left-8 md:bottom-10 md:left-10">
+          <a href="/team" class="btn-filled-teal shadow-lg hover:scale-105">
+            Discover us
+          </a>
+        </div>
       </div>
     </div>
 

@@ -1,19 +1,30 @@
 ---
+export interface Props {
+  // Pages that don't open on a dark hero (e.g. About) need the navbar to be
+  // readable from scroll position 0, so it skips the transparent-until-scroll
+  // behavior and stays solid from the start.
+  solid?: boolean;
+}
+
+const { solid = false } = Astro.props;
+
 const navLinks = [
-  { label: 'Home',              href: '#hero' },
-  { label: 'About',             href: '#about' },
-  { label: 'Bespoke solutions', href: '#solutions' },
-  { label: 'Team',              href: '#team' },
-  { label: 'Contact',           href: '#contact' },
+  { label: 'Home',              href: '/#hero' },
+  { label: 'About',             href: '/about' },
+  { label: 'Bespoke solutions', href: '/#solutions' },
+  { label: 'Team',              href: '/team' },
+  { label: 'Blog',              href: '/blog' },
+  { label: 'Contact',           href: '/contact' },
 ];
 ---
 
 <header
   id="navbar"
-  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-500"
+  data-solid={solid}
+  class={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-500 ${solid ? 'bg-teal/90 backdrop-blur-lg shadow-md' : ''}`}
 >
   <!-- Logo -->
-  <a href="#hero" class="block">
+  <a href="/#hero" class="block">
     <img src="/images/VALORA_logo.svg" alt="Valora" class="h-16 w-auto brightness-0 invert" />
   </a>
 
@@ -62,9 +73,11 @@ const navLinks = [
   const navbar    = document.getElementById('navbar')!;
   const toggle    = document.getElementById('menu-toggle')!;
   const mobileMenu = document.getElementById('mobile-menu')!;
+  const isSolid   = navbar.dataset.solid === 'true';
 
   // Scroll bg
   function updateNavbar() {
+    if (isSolid) return;
     if (window.scrollY > 60) {
       navbar.classList.add('bg-teal/90', 'backdrop-blur-lg', 'shadow-md');
     } else {

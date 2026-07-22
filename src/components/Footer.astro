@@ -2,25 +2,42 @@
 import footerData from '../content/settings/footer.json';
 import { netlifyImage } from '../lib/netlifyImage';
 
+export interface Props {
+  // Pages that already end on a full-bleed photo (e.g. About's sticky chapters)
+  // can swap the usual photo band for a solid dark one, so the logo reads
+  // clearly against whatever photo comes right before it instead of stacking
+  // photo-on-photo.
+  solid?: boolean;
+}
+
+const { solid = false } = Astro.props;
+
 const taglineParts = footerData.tagline.split(' · ');
 const backgroundImage = netlifyImage(footerData.background_image, { width: 1600 });
 ---
 
 <footer>
 
-  <!-- Upper block: full-width background photo + logo -->
-  <div
-    class="relative h-30 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-    style={`background-image: url('${backgroundImage}');`}
-  >
-    <!-- Dark overlay -->
-    <div class="absolute inset-0 bg-dark/50" />
-
-    <!-- Logo -->
-    <div class="relative z-10">
+  {solid ? (
+    <!-- Upper block: solid dark background + logo -->
+    <div class="h-30 flex items-center justify-center bg-dark">
       <img src="/images/VALORA_logo.svg" alt="Valora" class="h-30 w-auto brightness-0 invert" />
     </div>
-  </div>
+  ) : (
+    <!-- Upper block: full-width background photo + logo -->
+    <div
+      class="relative h-30 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      style={`background-image: url('${backgroundImage}');`}
+    >
+      <!-- Dark overlay -->
+      <div class="absolute inset-0 bg-dark/50" />
+
+      <!-- Logo -->
+      <div class="relative z-10">
+        <img src="/images/VALORA_logo.svg" alt="Valora" class="h-30 w-auto brightness-0 invert" />
+      </div>
+    </div>
+  )}
 
   <!-- Lower block: solid color + tagline -->
   <div class="bg-teal py-4 md:h-15 flex items-center justify-center px-6 md:px-16 text-center">

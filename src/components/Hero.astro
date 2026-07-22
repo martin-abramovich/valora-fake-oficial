@@ -3,19 +3,33 @@ import heroData from '../content/settings/hero.json';
 import { netlifyImage } from '../lib/netlifyImage';
 
 const bodyLines = heroData.body.split('\n');
-const backgroundImage = netlifyImage(heroData.background_image, { width: 1920 });
+const slides = heroData.background_images.map((img) => netlifyImage(img.src, { width: 1920 }));
+// A clone of the first slide is appended so the track can always swipe left,
+// even on the wrap-around from the last photo back to the first.
+const trackSlides = [...slides, slides[0]];
 ---
 
 <section
   id="hero"
   class="relative min-h-screen flex items-end overflow-hidden bg-dark"
 >
-  <div
-    class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style={`background-image: url('${backgroundImage}');`}
-    aria-hidden="true"
-  >
-    <!-- Dark gradient overlay -->
+  <!-- Background slider -->
+  <div class="hero-slider absolute inset-0" aria-hidden="true">
+    <div
+      class="hero-slider-track flex h-full will-change-transform"
+      style={`width: ${trackSlides.length * 100}%; transition: transform 1200ms cubic-bezier(0.65, 0, 0.35, 1);`}
+    >
+      {trackSlides.map((src, i) => (
+        <div class="h-full flex-none overflow-hidden" style={`width: ${100 / trackSlides.length}%`}>
+          <div
+            class={`hero-slide-img w-full h-full bg-cover bg-center bg-no-repeat ${i === 0 ? 'is-zooming' : ''}`}
+            style={`background-image: url('${src}');`}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Dark gradient overlay, fixed above every slide -->
     <div class="absolute inset-0 bg-linear-to-r from-dark/95 via-dark/50 to-dark/20" />
   </div>
 
@@ -45,3 +59,59 @@ const backgroundImage = netlifyImage(heroData.background_image, { width: 1920 })
     <div class="reveal mt-8 w-12 h-px bg-gold delay-400" />
   </div>
 </section>
+
+<style>
+  @keyframes hero-kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+
+  .hero-slide-img {
+    transform: scale(1);
+  }
+
+  .hero-slide-img.is-zooming {
+    animation: hero-kenburns 5s ease-out forwards;
+  }
+</style>
+
+<script>
+  const track = document.querySelector<HTMLElement>('.hero-slider-track');
+  if (track) {
+    const slideEls = Array.from(track.children) as HTMLElement[];
+    const realCount = slideEls.length - 1; // last child is the clone of the first
+    let current = 0;
+
+    function zoomIn(el: HTMLElement) {
+      const img = el.querySelector<HTMLElement>('.hero-slide-img');
+      if (!img) return;
+      img.classList.remove('is-zooming');
+      void img.offsetWidth; // force reflow so the animation restarts from scratch
+      img.classList.add('is-zooming');
+    }
+
+    function goNext() {
+      current += 1;
+      track!.style.transform = `translateX(-${current * (100 / slideEls.length)}%)`;
+      zoomIn(slideEls[current]);
+
+      if (current === realCount) {
+        // We've landed on the clone (visually identical to slide 0).
+        // Once the swipe finishes, snap back to the real first slide with no transition.
+        const handleTransitionEnd = () => {
+          track!.style.transition = 'none';
+          current = 0;
+          track!.style.transform = 'translateX(0%)';
+          void track!.offsetWidth;
+          track!.style.transition = 'transform 1200ms cubic-bezier(0.65, 0, 0.35, 1)';
+          track!.removeEventListener('transitionend', handleTransitionEnd);
+        };
+        track!.addEventListener('transitionend', handleTransitionEnd);
+      }
+    }
+
+    if (realCount > 1) {
+      setInterval(goNext, 5000);
+    }
+  }
+</script>

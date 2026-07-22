@@ -1,0 +1,96 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import SolutionLayout from '../../layouts/SolutionLayout.astro';
+import { netlifyImage } from '../../lib/netlifyImage';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { title, image, image_alt, date } = entry.data;
+const { Content } = await render(entry);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<SolutionLayout title={`${title} — Valora Blog`} description={title}>
+
+  <!-- Title band -->
+  <section class="bg-dark pt-40 pb-16 md:pt-48 md:pb-20 px-6 md:px-16">
+    <div class="max-w-3xl mx-auto">
+      <a href="/blog" class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6 inline-block hover:text-cream transition-colors duration-300">
+        ← Back to Blog
+      </a>
+      <p class="reveal font-body text-[11px] tracking-widest2 text-cream/60 uppercase mb-4 delay-100">
+        {dateFormatter.format(date)}
+      </p>
+      <h1 class="reveal font-heading text-cream text-4xl md:text-6xl font-light leading-[1.1] delay-200">
+        {title}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Hero photo -->
+  <section class="bg-cream">
+    <div class="max-w-5xl mx-auto px-6 md:px-16 -mt-6 md:-mt-10 relative z-10">
+      <div class="aspect-video overflow-hidden">
+        <img
+          src={netlifyImage(image, { width: 1600 })}
+          alt={image_alt ?? title}
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <section class="bg-cream py-16 md:py-20 px-6 md:px-16">
+    <div class="reveal blog-body max-w-2xl mx-auto">
+      <Content />
+    </div>
+  </section>
+
+  <!-- Closing banner -->
+  <section class="bg-white py-16 md:py-20 px-6 md:px-16">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8">
+      <div class="reveal flex flex-col sm:flex-row gap-4">
+        <a href="/contact" class="btn-filled-teal sm:whitespace-nowrap">
+          Bring your vision to life
+        </a>
+        <a href="/blog" class="btn-filled-teal sm:whitespace-nowrap">
+          Read more from the blog
+        </a>
+      </div>
+    </div>
+  </section>
+
+</SolutionLayout>
+
+<style>
+  .blog-body :global(p) {
+    font-family: var(--font-body);
+    color: color-mix(in srgb, var(--color-dark) 70%, transparent);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .blog-body :global(a) {
+    color: var(--color-teal);
+    text-decoration: underline;
+  }
+</style>

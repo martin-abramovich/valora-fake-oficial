@@ -1,0 +1,16 @@
+---
+import PageShell from './PageShell.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  navbarSolid?: boolean;
+  footerSolid?: boolean;
+}
+
+const { title, description, navbarSolid, footerSolid } = Astro.props;
+---
+
+<PageShell title={title} description={description} navbarSolid={navbarSolid} footerSolid={footerSolid}>
+  <slot />
+</PageShell>

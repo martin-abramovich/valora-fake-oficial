@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  navbarSolid?: boolean;
+  footerSolid?: boolean;
+}
+
+const {
+  title = 'Valora — Mastery in every detail.',
+  description = 'Valora transforms five-star interiors into memorable experiences with mirrors and art handcrafted in the USA.',
+  navbarSolid = false,
+  footerSolid = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline>
+      var hash = window.location.hash;
+      if (hash && (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token'))) {
+        window.location.replace('/admin/' + hash);
+      }
+    </script>
+  </head>
+  <body class="overflow-x-hidden">
+    <Navbar solid={navbarSolid} />
+    <main>
+      <slot />
+    </main>
+    <Footer solid={footerSolid} />
+    <script src="../scripts/reveal.js"></script>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { netlifyImage } from '../lib/netlifyImage';
+import { solutionSlug } from '../lib/solutionSlug';
 
 const allSolutions = await getCollection('solutions');
 const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
@@ -17,77 +18,79 @@ const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
       Bespoke Solutions
     </p>
 
-    <!-- 2×2 grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-14">
-      {solutions.map((sol, i) => (
-        <article class={`reveal delay-${(i % 4) * 100 + 100}`}>
+    <!-- 2 rows × 3 columns -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+      {solutions.map((sol, i) => {
+        const previewImages = sol.data.images.slice(0, 3);
+        return (
+          <article class={`reveal solution-card delay-${(i % 3) * 100 + 100}`}>
 
-          <!-- Slider -->
-          <div class="slider-wrap relative overflow-hidden aspect-4/3 mb-5" data-total={sol.data.images.length}>
+            <!-- Mini slider (much smaller, first 3 images) -->
+            <div class="slider-wrap relative overflow-hidden aspect-square mb-4" data-total={previewImages.length}>
+              <div class="slider-track flex h-full transition-transform duration-500 ease-out will-change-transform"
+                   style={`width: ${previewImages.length * 100}%`}>
+                {previewImages.map((img) => (
+                  <div class="h-full flex-none overflow-hidden" style={`width: ${100 / previewImages.length}%`}>
+                    <img
+                      src={netlifyImage(img.src, { width: 500 })}
+                      alt={img.alt}
+                      class="solution-img w-full h-full object-cover transition-transform duration-700 ease-out"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
 
-            <!-- Track width = n × 100% so each slide fills the visible area exactly -->
-            <div class="slider-track flex h-full transition-transform duration-500 ease-out will-change-transform"
-                 style={`width: ${sol.data.images.length * 100}%`}>
-              {sol.data.images.map((img) => (
-                <div class="h-full flex-none overflow-hidden" style={`width: ${100 / sol.data.images.length}%`}>
-                  <img
-                    src={netlifyImage(img.src, { width: 800 })}
-                    alt={img.alt}
-                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+              <!-- Prev arrow -->
+              <button
+                type="button"
+                class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 z-10
+                       w-7 h-7 flex items-center justify-center
+                       bg-dark/50 hover:bg-dark/75 text-cream text-lg leading-none
+                       transition-colors duration-200
+                       disabled:opacity-25 disabled:pointer-events-none"
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+
+              <!-- Next arrow -->
+              <button
+                type="button"
+                class="slider-next absolute right-2 top-1/2 -translate-y-1/2 z-10
+                       w-7 h-7 flex items-center justify-center
+                       bg-dark/50 hover:bg-dark/75 text-cream text-lg leading-none
+                       transition-colors duration-200
+                       disabled:opacity-25 disabled:pointer-events-none"
+                aria-label="Next image"
+              >
+                ›
+              </button>
             </div>
 
-            <!-- Prev arrow -->
-            <button
-              type="button"
-              class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 z-10
-                     w-8 h-8 flex items-center justify-center
-                     bg-dark/50 hover:bg-dark/75 text-cream text-xl leading-none
-                     transition-colors duration-200
-                     disabled:opacity-25 disabled:pointer-events-none"
-              aria-label="Previous image"
+            <!-- Title as button (links to the category page) -->
+            <a
+              href={`/solutions/${solutionSlug(sol.id)}`}
+              class="group relative flex items-center justify-between gap-3 border border-dark/25 px-5 py-3.5 overflow-hidden transition-colors duration-300 hover:border-teal"
             >
-              ‹
-            </button>
-
-            <!-- Next arrow -->
-            <button
-              type="button"
-              class="slider-next absolute right-2 top-1/2 -translate-y-1/2 z-10
-                     w-8 h-8 flex items-center justify-center
-                     bg-dark/50 hover:bg-dark/75 text-cream text-xl leading-none
-                     transition-colors duration-200
-                     disabled:opacity-25 disabled:pointer-events-none"
-              aria-label="Next image"
-            >
-              ›
-            </button>
-
-          </div>
-
-          <!-- Title -->
-          <h3 class="font-heading text-dark text-xl md:text-2xl font-light mb-2">
-            {sol.data.title}
-          </h3>
-          <!-- Description -->
-          <p class="font-body text-dark/65 text-sm leading-relaxed">
-            {sol.data.description}
-          </p>
-
-        </article>
-      ))}
+              <span class="font-body text-xs tracking-widest2 uppercase text-dark transition-colors duration-300 group-hover:text-teal">
+                {sol.data.title}
+              </span>
+              <span class="flex items-center gap-2 text-teal shrink-0 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out">
+                <span class="font-body text-[10px] tracking-widest2 uppercase whitespace-nowrap">Discover</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="flex-none">
+                  <path d="M1 8H15M15 8L9 2M15 8L9 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </a>
+          </article>
+        );
+      })}
     </div>
 
     <!-- CTA -->
     <div class="reveal mt-16 flex justify-center delay-300">
-      <a
-        href="#contact"
-        class="font-body text-sm tracking-widest2 text-dark uppercase border border-dark px-10 py-4
-               hover:bg-teal hover:text-cream hover:border-teal transition-all duration-300 text-center"
-      >
+      <a href="#contact" class="btn-outline-dark">
         Bring your vision to life
       </a>
     </div>
@@ -100,7 +103,7 @@ const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
     const track = wrap.querySelector<HTMLElement>('.slider-track')!;
     const prev  = wrap.querySelector<HTMLButtonElement>('.slider-prev')!;
     const next  = wrap.querySelector<HTMLButtonElement>('.slider-next')!;
-    const total = parseInt(wrap.dataset.total ?? '2', 10);
+    const total = parseInt(wrap.dataset.total ?? '1', 10);
     const step  = 100 / total; // % of track width per slide
     let current = 0;
 
@@ -116,5 +119,19 @@ const solutions = allSolutions.sort((a, b) => a.data.order - b.data.order);
     next.addEventListener('click', () => { if (current < total - 1) goto(current + 1); });
 
     goto(0); // set initial disabled states
+  });
+
+  // Zoom the photos only when the title button is hovered, not the photo itself
+  document.querySelectorAll<HTMLElement>('.solution-card').forEach((card) => {
+    const titleLink = card.querySelector<HTMLAnchorElement>('a');
+    const images = card.querySelectorAll<HTMLImageElement>('.solution-img');
+    if (!titleLink) return;
+
+    titleLink.addEventListener('mouseenter', () => {
+      images.forEach((img) => img.classList.add('scale-105'));
+    });
+    titleLink.addEventListener('mouseleave', () => {
+      images.forEach((img) => img.classList.remove('scale-105'));
+    });
   });
 </script>

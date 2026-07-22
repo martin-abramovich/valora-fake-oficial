@@ -27,6 +27,42 @@
   }
 }
 
+@layer components {
+  /*
+   * Shared primary-CTA recipe. Every large bordered/filled call-to-action
+   * button on the site (home "Bring your vision to life", About "Learn more",
+   * solution-page closing banner) uses one of the variants below so they stay
+   * visually and behaviorally identical by construction, not by copying the
+   * same Tailwind string into every file. Each variant repeats the shared
+   * size/spacing/timing utilities on purpose — Tailwind v4 can only @apply
+   * real utilities, not one custom class from inside another.
+   */
+
+  /* Light backgrounds: dark outline, fills teal on hover */
+  .btn-outline-dark {
+    @apply inline-block border border-dark px-10 py-4 text-center
+           font-body text-sm tracking-widest2 uppercase text-dark
+           transition-all duration-300 ease-in
+           hover:border-teal hover:bg-teal hover:text-cream;
+  }
+
+  /* Dark backgrounds: cream outline, fills cream on hover */
+  .btn-outline-cream {
+    @apply inline-block border border-cream px-10 py-4 text-center
+           font-body text-sm tracking-widest2 uppercase text-cream
+           transition-all duration-300 ease-in
+           hover:bg-cream hover:text-teal;
+  }
+
+  /* White/light backgrounds needing more weight: solid teal, deepens on hover */
+  .btn-filled-teal {
+    @apply inline-block border border-teal bg-teal px-10 py-4 text-center
+           font-body text-sm tracking-widest2 uppercase text-cream
+           transition-all duration-300 ease-in
+           hover:border-forest hover:bg-forest;
+  }
+}
+
 @layer utilities {
   /* Scroll-reveal base states */
   .reveal {

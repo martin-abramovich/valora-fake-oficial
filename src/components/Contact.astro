@@ -1,28 +1,9 @@
 ---
 import contactData from '../content/settings/contact.json';
+import ContactForm from './ContactForm.astro';
 
-const roles = contactData.roles;
-const projectTypes = contactData.project_types;
-const projectStages = contactData.project_stages;
 const bodyLines = contactData.body.split('\n');
 ---
-
-<!--
-  Hidden form for Netlify's build-time bot detection.
-  Required when the site is built with a JS framework/SSG that
-  renders HTML dynamically. Must mirror every field name in the
-  visible form below.
--->
-<form name="contact" data-netlify="true" hidden>
-  <input type="text"  name="fullname" />
-  <input type="text"  name="company" />
-  <select             name="role"><option /></select>
-  <input type="email" name="email" />
-  <input type="text"  name="location" />
-  <select             name="project-type"><option /></select>
-  <select             name="stage"><option /></select>
-  <textarea           name="message"></textarea>
-</form>
 
 <section
   id="contact"
@@ -62,214 +43,19 @@ const bodyLines = contactData.body.split('\n');
             </>
           ))}
         </p>
+
+        <div class="reveal delay-400 mt-8">
+          <a href="/contact" class="btn-outline-dark">
+            Find your rep
+          </a>
+        </div>
       </div>
 
       <!-- Form -->
       <div class="reveal slide-right delay-200">
-        <form
-          id="contact-form"
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-          class="grid grid-cols-1 sm:grid-cols-2 gap-5"
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <input type="hidden" name="subject" value="New project inquiry — Valora" />
-          <!-- Honeypot: invisible to humans, bots fill it → Netlify silently discards the submission -->
-          <p class="hidden" aria-hidden="true">
-            <label>Don't fill this out: <input name="bot-field" /></label>
-          </p>
-
-          <!-- Full name -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="fullname">
-              Full name
-            </label>
-            <input
-              id="fullname"
-              name="fullname"
-              type="text"
-              required
-              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
-                     focus:outline-none focus:border-teal transition-colors duration-200"
-            />
-          </div>
-
-          <!-- Company / Studio -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="company">
-              Company / Studio
-            </label>
-            <input
-              id="company"
-              name="company"
-              type="text"
-              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
-                     focus:outline-none focus:border-teal transition-colors duration-200"
-            />
-          </div>
-
-          <!-- Role -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="role">
-              Role
-            </label>
-            <div class="relative">
-              <select
-                id="role"
-                name="role"
-                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
-                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
-              >
-                <option value="" disabled selected></option>
-                {roles.map((r: string) => <option value={r}>{r}</option>)}
-              </select>
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="email">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
-                     focus:outline-none focus:border-teal transition-colors duration-200"
-            />
-          </div>
-
-          <!-- Project location -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="location">
-              Project location
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
-                     focus:outline-none focus:border-teal transition-colors duration-200"
-            />
-          </div>
-
-          <!-- Project type -->
-          <div class="flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="project-type">
-              Project type
-            </label>
-            <div class="relative">
-              <select
-                id="project-type"
-                name="project-type"
-                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
-                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
-              >
-                <option value="" disabled selected></option>
-                {projectTypes.map((t: string) => <option value={t}>{t}</option>)}
-              </select>
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
-            </div>
-          </div>
-
-          <!-- Project stage — full width -->
-          <div class="sm:col-span-2 flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="stage">
-              Project stage
-            </label>
-            <div class="relative">
-              <select
-                id="stage"
-                name="stage"
-                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
-                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
-              >
-                <option value="" disabled selected></option>
-                {projectStages.map((s: string) => <option value={s}>{s}</option>)}
-              </select>
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
-            </div>
-          </div>
-
-          <!-- Tell us about the space — full width -->
-          <div class="sm:col-span-2 flex flex-col gap-1">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="message">
-              Tell us about the space
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              class="border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark placeholder-dark/30
-                     focus:outline-none focus:border-teal transition-colors duration-200 resize-none"
-            />
-          </div>
-
-          <!-- Submit — full width, right-aligned -->
-          <div class="sm:col-span-2 flex justify-end">
-            <button
-              type="submit"
-              class="font-body text-sm tracking-widest2 text-cream bg-forest px-10 py-3 uppercase
-                     hover:bg-teal transition-colors duration-300"
-            >
-              Send
-            </button>
-          </div>
-
-        </form>
-
-        <!-- Success message shown after submission -->
-        <div id="contact-success" class="hidden flex-col gap-5 py-4">
-          <span class="text-gold text-base">✦</span>
-          <p class="font-heading text-dark text-2xl md:text-3xl font-light leading-snug">
-            Thank you.<br />We'll be in touch.
-          </p>
-          <p class="font-body text-dark/60 text-sm leading-relaxed">
-            Your inquiry has been received.<br />
-          </p>
-        </div>
+        <ContactForm />
       </div>
 
     </div>
   </div>
 </section>
-
-<script>
-  const form    = document.getElementById('contact-form') as HTMLFormElement | null;
-  const success = document.getElementById('contact-success');
-
-  function showSuccess() {
-    form?.classList.add('hidden');
-    success?.classList.remove('hidden');
-    success?.classList.add('flex');
-  }
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const data   = new FormData(form);
-    const params = new URLSearchParams();
-    data.forEach((value, key) => {
-      if (typeof value === 'string') params.append(key, value);
-    });
-
-    try {
-      await fetch('/', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    params.toString(),
-      });
-    } catch {
-      // Ignore network errors — the request may still reach Netlify.
-      // Never navigate away regardless of outcome.
-    } finally {
-      showSuccess();
-    }
-  });
-</script>

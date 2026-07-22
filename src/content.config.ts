@@ -10,8 +10,45 @@ const solutions = defineCollection({
     images: z.array(z.object({
       src: z.string(),
       alt: z.string(),
+      tag: z.string().optional(),
     })),
+    documents: z.array(z.object({
+      label: z.string(),
+      file: z.string(),
+    })).optional(),
   }),
 });
 
-export const collections = { solutions };
+const team = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
+  schema: z.object({
+    order: z.number(),
+    name: z.string(),
+    role: z.string(),
+    photo: z.string().optional(),
+    bio: z.string().optional(),
+  }),
+});
+
+const reps = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/reps' }),
+  schema: z.object({
+    name: z.string(),
+    company: z.string(),
+    email: z.string(),
+    phone: z.string(),
+    regions: z.array(z.string()),
+  }),
+});
+
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    image: z.string(),
+    image_alt: z.string().optional(),
+    date: z.coerce.date(),
+  }),
+});
+
+export const collections = { solutions, team, reps, blog };
