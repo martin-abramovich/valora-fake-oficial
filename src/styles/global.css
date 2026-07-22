@@ -25,6 +25,11 @@
     @apply bg-cream text-dark font-body;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Offsets anchor scrolling so section headings don't land under the fixed navbar. */
+  #about, #solutions, #art-curation, #team, #contact {
+    scroll-margin-top: 110px;
+  }
 }
 
 @layer components {
