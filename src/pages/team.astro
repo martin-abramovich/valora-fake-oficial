@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import SolutionLayout from '../layouts/SolutionLayout.astro';
 import { netlifyImage } from '../lib/netlifyImage';
 import { US_REGIONS, US_GRID_ROWS, US_GRID_COLS, CANADA_REGION } from '../lib/usRegions';
+import teamData from '../content/settings/team.json';
 
 const allMembers = await getCollection('team');
 const members = allMembers.sort((a, b) => a.data.order - b.data.order);
@@ -51,10 +52,10 @@ const regionData = Object.fromEntries(
         Valora
       </p>
       <h1 class="reveal font-heading text-cream text-5xl md:text-7xl font-light leading-[1.05] mb-6 delay-100">
-        Our Team
+        {teamData.page_heading}
       </h1>
       <p class="reveal font-body text-cream/80 text-sm md:text-base leading-relaxed max-w-2xl delay-200">
-        Behind every distinct visual identity is a team of specialized minds. We combine forty years of technical expertise with a discerning creative perspective to bring your most ambitious projects to life.
+        {teamData.page_description}
       </p>
     </div>
   </section>

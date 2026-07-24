@@ -182,25 +182,50 @@ collections:
         label: Art Curation Section
         file: src/content/settings/art-curation.json
         fields:
-          - { name: eyebrow, label: Eyebrow Text, widget: string }
-          - { name: heading_before_em, label: "Heading — before italic", widget: string }
-          - { name: heading_em, label: "Heading — italic word", widget: string }
-          - { name: heading_after_em, label: "Heading — after italic", widget: string }
+          - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string }
+          - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string }
           - name: paragraphs
-            label: Body Paragraphs
+            label: "Homepage Teaser — Body Paragraphs"
             widget: list
             field: { name: text, label: Paragraph, widget: text }
-          - { name: image, label: Image, widget: image }
-          - { name: image_alt, label: Image Alt Text, widget: string }
+          - { name: image, label: "Homepage Teaser — Image", widget: image }
+          - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
+          - name: beats
+            label: "Art Curation Page — Scrolling Photo Sequence"
+            widget: list
+            min: 1
+            hint: "Each beat is one photo + one caption line, shown in order as the visitor scrolls down the Art Curation page"
+            fields:
+              - { name: src, label: Photo, widget: image }
+              - { name: alt, label: Alt Text, widget: string }
+              - { name: text, label: Caption, widget: string }
+          - { name: page_heading, label: "Art Curation Page — Body Heading", widget: string }
+          - name: page_paragraphs
+            label: "Art Curation Page — Body Paragraphs"
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
 
       - name: team
         label: Team Section
         file: src/content/settings/team.json
         fields:
-          - { name: heading, label: Heading, widget: string }
-          - { name: description, label: Description, widget: text }
-          - { name: image, label: Image, widget: image }
-          - { name: image_alt, label: Image Alt Text, widget: string }
+          - { name: heading, label: "Homepage Teaser — Heading", widget: string }
+          - { name: description, label: "Homepage Teaser — Description", widget: text }
+          - { name: image, label: "Homepage Teaser — Image", widget: image }
+          - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
+          - { name: page_heading, label: "Team Page — Heading", widget: string }
+          - { name: page_description, label: "Team Page — Description", widget: text }
+
+      - name: join-team
+        label: "Join Team Section"
+        file: src/content/settings/join-team.json
+        fields:
+          - { name: heading_before_em, label: "Heading — start", widget: string, hint: 'e.g. "Join our team of "' }
+          - { name: heading_em, label: "Heading — italic phrase", widget: string, hint: 'e.g. "talented professionals"' }
+          - { name: body, label: "Body Text", widget: string, hint: 'Text shown before the email link, e.g. "Send us your portfolio to"' }
+          - { name: email, label: "Contact Email", widget: string }
 
       - name: contact
         label: Contact Section
