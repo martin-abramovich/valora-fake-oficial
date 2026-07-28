@@ -12,6 +12,10 @@ const solutions = defineCollection({
       alt: z.string(),
       tag: z.string().optional(),
     })),
+    category_descriptions: z.array(z.object({
+      tag: z.string(),
+      description: z.string(),
+    })).optional(),
     documents: z.array(z.object({
       label: z.string(),
       file: z.string(),
@@ -37,6 +41,7 @@ const reps = defineCollection({
     company: z.string(),
     email: z.string(),
     phone: z.string(),
+    photo: z.string().optional(),
     regions: z.array(z.string()),
   }),
 });

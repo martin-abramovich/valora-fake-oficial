@@ -3,105 +3,134 @@ import SolutionLayout from '../layouts/SolutionLayout.astro';
 import aboutData from '../content/settings/about.json';
 import { netlifyImage } from '../lib/netlifyImage';
 
-const darkBodyParagraphs = aboutData.dark_body.split('\n\n');
-const pageBodyParagraphs = aboutData.page_body.split('\n\n');
+const section2Intro = aboutData.section2_intro;
 ---
 
-<SolutionLayout title="About — Valora" description={aboutData.eyebrow} navbarSolid={true}>
+<SolutionLayout title="About — Valora" description={aboutData.page_heading} navbarSolid={true}>
 
-  <!-- Title: same title & text as the home About preview, in color, no solid background -->
-  <section class="bg-cream pt-36 pb-16 md:pt-44 md:pb-20 px-6 md:px-16">
-    <div class="max-w-7xl mx-auto">
-      <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
-        {aboutData.eyebrow}
+  <!-- Hero + Section 1 — About Us / Where your vision finds Valora, stacked above The Origin & Role.
+       Stretched (not centered) so the photo's top AND bottom edges match the text column exactly. -->
+  <section class="bg-cream pt-36 pb-16 md:pt-44 md:pb-20 overflow-hidden">
+    <div class="flex flex-col md:flex-row md:items-stretch gap-10 md:gap-16 lg:gap-20">
+
+      <div class="px-6 md:pl-16 lg:pl-20 md:pr-4 md:flex-1 min-w-0">
+        <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
+          {aboutData.page_eyebrow}
+        </p>
+        <h1 class="reveal font-heading text-teal text-5xl md:text-7xl font-light leading-[1.05] delay-100 mb-12 md:mb-16">
+          {aboutData.page_heading}
+        </h1>
+
+        <!-- Chapter break: marks the shift from the hero statement into the first body section -->
+        <div class="reveal w-16 h-px bg-gold/70 mb-12 md:mb-16" />
+
+        <h2 class="reveal font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-8">
+          {aboutData.section1_heading}
+        </h2>
+        <div class="space-y-5 reveal delay-100">
+          {aboutData.section1_paragraphs.map((para: string) => (
+            <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
+              {para}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <div class="reveal slide-right delay-200 px-6 md:px-0 md:shrink-0 md:w-[45%]">
+        <div class="relative overflow-hidden aspect-5/4 md:aspect-auto md:h-full">
+          <img
+            src={netlifyImage(aboutData.section1_image, { width: 1200 })}
+            alt={aboutData.section1_image_alt}
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 w-1 h-24 bg-gold" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2a — What to Expect: short photo separator, just the pull-quote -->
+  <section class="relative h-[55vh] md:h-[65vh] flex items-center justify-center overflow-hidden">
+    <img
+      src={netlifyImage(aboutData.section2_image, { width: 1920 })}
+      alt={aboutData.section2_image_alt}
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-dark/55" />
+
+    <div class="relative px-6 md:px-16 max-w-4xl text-center">
+      <h2 class="reveal font-heading text-cream text-4xl md:text-6xl font-light leading-[1.15] mb-6">
+        {aboutData.section2_heading}
+      </h2>
+      <p class="reveal font-body text-cream/90 text-base md:text-xl leading-relaxed delay-100">
+        {section2Intro}
       </p>
-      <h1 class="reveal font-heading text-teal text-5xl md:text-7xl font-light leading-[1.05] mb-8 delay-100 max-w-4xl">
-        {aboutData.heading_before_em}<em class="font-script not-italic font-normal">{aboutData.heading_em}</em>{aboutData.heading_after_em}
-      </h1>
-      <div class="reveal space-y-5 max-w-2xl delay-200">
-        {aboutData.paragraphs.map((para: string) => (
-          <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
-            {para}
+    </div>
+  </section>
+
+  <!-- Section 2b — the feature list, on white -->
+  <section class="bg-white py-16 md:py-20 px-6 md:px-16">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+      {aboutData.section2_items.map((item: { label: string; text: string }) => (
+        <div class="reveal border-l-2 border-gold/70 pl-5">
+          <h3 class="font-heading text-dark text-lg md:text-xl font-light leading-tight mb-2">
+            {item.label}
+          </h3>
+          <p class="font-body text-dark/70 text-sm leading-relaxed">
+            {item.text}
           </p>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   </section>
 
-  <!-- Chapter 01 — sticky text panel over a scrolling background photo -->
-  <section class="relative min-h-[170vh] md:min-h-[160vh]">
-    <div class="absolute inset-0">
-      <img
-        src={netlifyImage(aboutData.dark_image, { width: 1920 })}
-        alt={aboutData.dark_image_alt}
-        class="w-full h-full object-cover"
-        loading="lazy"
-      />
-      <div class="absolute inset-0 bg-dark/60" />
-    </div>
+  <!-- Section 3 — Leadership Behind the Brand: clean split, image left / text right -->
+  <section class="bg-cream py-12 md:py-20 overflow-hidden">
+    <div class="flex flex-col md:flex-row md:items-center gap-10 md:gap-16 lg:gap-20">
 
-    <div class="sticky top-0 h-screen flex flex-col justify-between px-6 md:px-16 pt-28 pb-16 md:pt-32 md:pb-20">
-      <!-- Corner micro-labels -->
-      <div class="reveal flex items-start justify-between max-w-7xl mx-auto w-full">
-        <span class="font-body text-[11px] tracking-widest2 text-cream/70 uppercase">About Valora</span>
-        <span class="font-body text-[11px] tracking-widest2 text-cream/70 uppercase text-right">01 — Philosophy</span>
+      <div class="reveal slide-left order-1 md:order-none px-6 md:px-0 md:shrink-0 md:w-[45%]">
+        <div class="relative overflow-hidden aspect-5/4">
+          <img
+            src={netlifyImage(aboutData.section3_image, { width: 1200 })}
+            alt={aboutData.section3_image_alt}
+            class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 w-1 h-24 bg-gold" />
+        </div>
       </div>
 
-      <!-- Panel -->
-      <div class="max-w-7xl mx-auto w-full">
-        <h2 class="reveal font-heading text-cream text-3xl md:text-4xl font-light leading-[1.2] mb-6 delay-100">
-          {aboutData.dark_subtitle}
+      <div class="reveal slide-right delay-200 order-2 md:order-none px-6 md:pr-16 lg:pr-20 md:pl-4 md:flex-1 min-w-0">
+        <h2 class="font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-7">
+          {aboutData.section3_heading}
         </h2>
-        <div class="reveal space-y-5 max-w-2xl delay-200">
-          {darkBodyParagraphs.map((para: string) => (
-            <p class="font-body text-cream/85 text-sm md:text-base leading-relaxed">
+        <div class="space-y-5">
+          {aboutData.section3_paragraphs.map((para: string) => (
+            <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
               {para}
             </p>
           ))}
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Chapter 02 — sticky text panel over a scrolling background photo -->
-  <section class="relative min-h-[170vh] md:min-h-[160vh]">
-    <div class="absolute inset-0">
-      <img
-        src={netlifyImage(aboutData.page_image, { width: 1920 })}
-        alt={aboutData.page_image_alt}
-        class="w-full h-full object-cover"
-        loading="lazy"
-      />
-      <div class="absolute inset-0 bg-dark/60" />
-    </div>
-
-    <div class="sticky top-0 h-screen flex flex-col justify-between px-6 md:px-16 pt-28 pb-16 md:pt-32 md:pb-20">
-      <!-- Corner micro-labels -->
-      <div class="reveal flex items-start justify-between max-w-7xl mx-auto w-full">
-        <span class="font-body text-[11px] tracking-widest2 text-cream/70 uppercase">About Valora</span>
-        <span class="font-body text-[11px] tracking-widest2 text-cream/70 uppercase text-right">02 — Craft &amp; Detail</span>
-      </div>
-
-      <!-- Panel -->
-      <div class="max-w-7xl mx-auto w-full">
-        <h2 class="reveal font-heading text-cream text-3xl md:text-4xl font-light leading-[1.2] mb-6 delay-100">
-          {aboutData.page_subtitle}
-        </h2>
-        <div class="reveal space-y-5 max-w-2xl delay-200">
-          {pageBodyParagraphs.map((para: string) => (
-            <p class="font-body text-cream/85 text-sm md:text-base leading-relaxed">
-              {para}
-            </p>
-          ))}
+        <div class="reveal delay-300 mt-8">
+          <a href="/team" class="btn-outline-dark">
+            {aboutData.section3_cta_label}
+          </a>
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- Closing banner -->
+  <!-- Closing banner — tagline bookends the page, echoing the homepage teaser -->
   <section class="bg-white py-16 md:py-20 px-6 md:px-16">
     <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8">
-      <div class="reveal flex flex-col sm:flex-row gap-4">
+      <p class="reveal font-heading text-dark text-2xl md:text-3xl font-light leading-[1.3]">
+        {aboutData.heading_before_em}<em class="font-script not-italic">{aboutData.heading_em}</em>{aboutData.heading_after_em}
+      </p>
+      <div class="reveal delay-100 flex flex-col sm:flex-row gap-4">
         <a href="/#contact" class="btn-filled-teal sm:whitespace-nowrap">
           Bring your vision to life
         </a>

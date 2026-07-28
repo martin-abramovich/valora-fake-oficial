@@ -96,7 +96,13 @@ const trackSlides = [...slides, slides[0]];
       zoomIn(slideEls[current]);
 
       if (current === realCount) {
-        // We've landed on the clone (visually identical to slide 0).
+        // We've landed on the clone (visually identical to slide 0). Kick off
+        // slide 0's own zoom in lockstep with the clone's, so both are at the
+        // same mid-zoom frame when we silently snap back to it below —
+        // otherwise slide 0 sits frozen at its initial-load zoom and the
+        // snap shows a visible jump/cut.
+        zoomIn(slideEls[0]);
+
         // Once the swipe finishes, snap back to the real first slide with no transition.
         const handleTransitionEnd = () => {
           track!.style.transition = 'none';

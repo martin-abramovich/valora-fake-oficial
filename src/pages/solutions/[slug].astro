@@ -17,18 +17,49 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, description, images, documents } = entry.data;
+const { title, description, images, category_descriptions, documents } = entry.data;
 
 // Unique subcategory tags (in first-seen order), used to build the gallery filter.
-// Images without a tag are only shown under "All".
+// Untagged images are always visible and unaffected by these filters.
 const tags = [...new Set(images.map((img) => img.tag).filter((t): t is string => Boolean(t)))];
+
+// Optional per-tag blurb, shown under the filters once a visitor picks one.
+const tagDescriptions = Object.fromEntries(
+  (category_descriptions ?? []).map((c) => [c.tag, c.description])
+);
+
+// Title-band background slider: the solution's own first 3 photos, in the
+// order set on the entry — simplest option that needs no extra CMS field.
+const heroSlides = images.slice(0, 3).map((img) => netlifyImage(img.src, { width: 1920 }));
+const heroTrackSlides = heroSlides.length > 1 ? [...heroSlides, heroSlides[0]] : heroSlides;
 ---
 
 <SolutionLayout title={`${title} — Valora`} description={description}>
 
   <!-- Title band -->
-  <section class="bg-dark pt-40 pb-20 md:pt-48 md:pb-24 px-6 md:px-16">
-    <div class="max-w-4xl mx-auto">
+  <section class="relative overflow-hidden bg-dark pt-40 pb-20 md:pt-48 md:pb-24 px-6 md:px-16">
+    {heroSlides.length > 0 && (
+      <div class="hero-slider absolute inset-0" aria-hidden="true">
+        <div
+          class="hero-slider-track flex h-full will-change-transform"
+          style={`width: ${heroTrackSlides.length * 100}%; transition: transform 1200ms cubic-bezier(0.65, 0, 0.35, 1);`}
+        >
+          {heroTrackSlides.map((src, i) => (
+            <div class="h-full flex-none overflow-hidden" style={`width: ${100 / heroTrackSlides.length}%`}>
+              <div
+                class={`hero-slide-img w-full h-full bg-cover bg-center bg-no-repeat ${i === 0 ? 'is-zooming' : ''}`}
+                style={`background-image: url('${src}');`}
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- Dark gradient overlay, fixed above every slide, for text legibility -->
+        <div class="absolute inset-0 bg-linear-to-r from-dark/95 via-dark/50 to-dark/20" />
+      </div>
+    )}
+
+    <div class="relative z-10 max-w-4xl mx-auto">
       <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
         Bespoke Solutions
       </p>
@@ -46,38 +77,36 @@ const tags = [...new Set(images.map((img) => img.tag).filter((t): t is string =>
     <div class="max-w-7xl mx-auto">
 
       {tags.length > 0 && (
-        <div class="reveal flex flex-wrap gap-3 mb-10">
-          <button
-            type="button"
-            data-filter="all"
-            class="gallery-filter is-active font-body text-xs tracking-widest2 uppercase px-5 py-2.5 border border-dark/25 text-dark transition-colors duration-300"
-          >
-            All
-          </button>
-          {tags.map((tag) => (
-            <button
-              type="button"
-              data-filter={tag}
-              class="gallery-filter font-body text-xs tracking-widest2 uppercase px-5 py-2.5 border border-dark/25 text-dark transition-colors duration-300"
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
+        <>
+          <div class="reveal flex flex-wrap gap-3 mb-6">
+            {tags.map((tag) => (
+              <button
+                type="button"
+                data-filter={tag}
+                data-description={tagDescriptions[tag] ?? ''}
+                class="gallery-filter font-body text-xs tracking-widest2 uppercase px-5 py-2.5 border border-dark/25 text-dark transition-colors duration-300"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
+          <p class="gallery-filter-description font-body text-dark/70 text-sm md:text-base leading-relaxed max-w-2xl mb-10 opacity-0 transition-opacity duration-300"></p>
+        </>
       )}
 
-      <!-- Gallery grid: every photo visible at once, click to open the lightbox -->
-      <div class="gallery-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+      <!-- Gallery grid: a curated set of photos, shown large and editorial, click to open the lightbox -->
+      <div class="gallery-grid grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
         {images.map((img, i) => (
           <button
             type="button"
-            class={`gallery-tile reveal aspect-square overflow-hidden group delay-${(i % 6) * 100 + 100}`}
+            class={`gallery-tile reveal aspect-4/5 overflow-hidden group delay-${(i % 2) * 150 + 100}`}
             data-index={i}
             data-tag={img.tag ?? ''}
             aria-label={`View ${img.alt}`}
           >
             <img
-              src={netlifyImage(img.src, { width: 600 })}
+              src={netlifyImage(img.src, { width: 1000 })}
               alt={img.alt}
               class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               loading="lazy"
@@ -161,6 +190,7 @@ const tags = [...new Set(images.map((img) => img.tag).filter((t): t is string =>
   const allImages: GalleryImage[] = dataEl ? JSON.parse(dataEl.textContent ?? '[]') : [];
 
   const filterButtons = document.querySelectorAll<HTMLButtonElement>('.gallery-filter');
+  const filterDescription = document.querySelector<HTMLElement>('.gallery-filter-description');
   const tiles = document.querySelectorAll<HTMLButtonElement>('.gallery-tile');
 
   const lightbox = document.querySelector<HTMLElement>('.lightbox');
@@ -234,10 +264,18 @@ const tags = [...new Set(images.map((img) => img.tag).filter((t): t is string =>
 
   filterButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter ?? 'all';
-
+      // No "All" button: clicking the already-active tag deselects it and
+      // reveals every photo again; clicking a different tag filters to it.
+      const alreadyActive = btn.classList.contains('is-active');
       filterButtons.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
+      const filter = alreadyActive ? 'all' : (btn.dataset.filter ?? 'all');
+      if (!alreadyActive) btn.classList.add('is-active');
+
+      if (filterDescription) {
+        const text = alreadyActive ? '' : (btn.dataset.description ?? '');
+        filterDescription.textContent = text;
+        filterDescription.classList.toggle('opacity-0', !text);
+      }
 
       visibleIndexes = [];
       tiles.forEach((tile) => {
@@ -255,4 +293,64 @@ const tags = [...new Set(images.map((img) => img.tag).filter((t): t is string =>
     color: var(--color-cream);
     border-color: var(--color-dark);
   }
+
+  @keyframes hero-kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+
+  .hero-slide-img {
+    transform: scale(1);
+  }
+
+  .hero-slide-img.is-zooming {
+    animation: hero-kenburns 5s ease-out forwards;
+  }
 </style>
+
+<script>
+  const heroTrack = document.querySelector<HTMLElement>('.hero-slider-track');
+  if (heroTrack) {
+    const slideEls = Array.from(heroTrack.children) as HTMLElement[];
+    const realCount = slideEls.length > 1 ? slideEls.length - 1 : slideEls.length; // last child is the clone of the first, when there's more than one slide
+    let current = 0;
+
+    function zoomIn(el: HTMLElement) {
+      const img = el.querySelector<HTMLElement>('.hero-slide-img');
+      if (!img) return;
+      img.classList.remove('is-zooming');
+      void img.offsetWidth; // force reflow so the animation restarts from scratch
+      img.classList.add('is-zooming');
+    }
+
+    function goNext() {
+      current += 1;
+      heroTrack!.style.transform = `translateX(-${current * (100 / slideEls.length)}%)`;
+      zoomIn(slideEls[current]);
+
+      if (current === realCount) {
+        // We've landed on the clone (visually identical to slide 0). Kick off
+        // slide 0's own zoom in lockstep with the clone's, so both are at the
+        // same mid-zoom frame when we silently snap back to it below —
+        // otherwise slide 0 sits frozen at its initial-load zoom and the
+        // snap shows a visible jump/cut.
+        zoomIn(slideEls[0]);
+
+        // Once the swipe finishes, snap back to the real first slide with no transition.
+        const handleTransitionEnd = () => {
+          heroTrack!.style.transition = 'none';
+          current = 0;
+          heroTrack!.style.transform = 'translateX(0%)';
+          void heroTrack!.offsetWidth;
+          heroTrack!.style.transition = 'transform 1200ms cubic-bezier(0.65, 0, 0.35, 1)';
+          heroTrack!.removeEventListener('transitionend', handleTransitionEnd);
+        };
+        heroTrack!.addEventListener('transitionend', handleTransitionEnd);
+      }
+    }
+
+    if (realCount > 1) {
+      setInterval(goNext, 5000);
+    }
+  }
+</script>

@@ -10,27 +10,10 @@
   ],
   "image": "/images/fine-art-curation-04.png",
   "image_alt": "Large scale blue and beige abstract canvas art",
-  "beats": [
-    {
-      "src": "/images/fine-art-curation-04.png",
-      "alt": "Large scale blue and beige abstract canvas art",
-      "text": "Every project begins with a single image."
-    },
-    {
-      "src": "/images/fine-art-curation-06.png",
-      "alt": "Three framed triptych coastal paintings",
-      "text": "We curate for the story behind the piece, not just the palette."
-    },
-    {
-      "src": "/images/fine-art-curation-12.png",
-      "alt": "Framed geometric abstract painting",
-      "text": "A more sophisticated approach than regional art alone."
-    },
-    {
-      "src": "/images/fine-art-curation-02.png",
-      "alt": "Three ornate gold-framed abstract paintings",
-      "text": "The differentiator that sets every Valora space apart."
-    }
+  "video_url": "https://player.vimeo.com/video/1212726736?h=3756cfdc47",
+  "video_captions": [
+    "Every project begins with a single image.",
+    "The differentiator that sets every Valora space apart."
   ],
   "page_heading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "page_paragraphs": [

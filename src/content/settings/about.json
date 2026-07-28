@@ -10,12 +10,35 @@
   ],
   "image": "/images/3d-art-commissions-04.webp",
   "image_alt": "Luxurious interior with circular mirror and curved sofa",
-  "dark_subtitle": "Consectetur adipiscing elit, sed do eiusmod",
-  "dark_body": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.\n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.",
-  "dark_image": "/images/acoustic-panels-08.png",
-  "dark_image_alt": "Textured geometric wallcovering behind a wooden sideboard",
-  "page_subtitle": "Lorem ipsum dolor sit amet, consectetur",
-  "page_body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum euismod, nisi eu consectetur consectetur, nisl nunc consectetur nisi, euismod consectetur nisi nunc euismod nisi. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, et faucibus urna auctor quis.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-  "page_image": "/images/3d-art-commissions-14.png",
-  "page_image_alt": "Sculptural gold wall art above a cream sofa"
+
+  "page_eyebrow": "About Us",
+  "page_heading": "Where your vision finds Valora",
+
+  "section1_heading": "The Origin & Role",
+  "section1_paragraphs": [
+    "Some projects demand more than execution. They demand a partner who speaks the language of space and holds the technical craft to bring it to life.",
+    "Valora was created to be that partner.",
+    "Built to serve full-service 5-star properties and ambitious luxury hospitality environments, our brand represents a new chapter backed by forty years of American manufacturing heritage. We bring the operational discipline, scale, and technical capability of an established group, focused entirely on interpreting and elevating your bespoke art decisions."
+  ],
+  "section1_image": "/images/about-interior.webp",
+  "section1_image_alt": "Valora interior showcasing bespoke art and materiality",
+
+  "section2_heading": "Physical Precision. Deliberate Materiality",
+  "section2_intro": "Working with Valora is an ongoing dialogue of technical precision. You define the vision, we engineer the response.",
+  "section2_items": [
+    { "label": "Dedicated In-House Artisans", "text": "Master craftspeople working exclusively to interpret your exact specifications." },
+    { "label": "End-to-End Domestic Craft", "text": "Crafted entirely in the United States. By holding total control from the first sketch to final installation, we ensure no nuance is lost between the studio floor and the property wall." },
+    { "label": "Deliberate Materiality", "text": "Focused execution in copper, fiber, acoustic surfaces, and reflected light. From custom architectural wallcoverings to integrated lighting and three-dimensional art commissions, we deliver the exact physical presence your space demands." }
+  ],
+  "section2_image": "/images/acoustic-panels-08.png",
+  "section2_image_alt": "Textured geometric wallcovering behind a wooden sideboard",
+
+  "section3_heading": "Leadership Behind the Brand",
+  "section3_paragraphs": [
+    "Valora is led by seasoned industry experts who know luxury hospitality from the inside: its rhythm, its standards, and the weight of every detail.",
+    "Spearheaded by leadership with over thirty years in high-end hospitality, our team combines deep category expertise with an unyielding respect for creative intent. We understand your goals, anticipate your challenges, and share your commitment to bringing exceptional design to life."
+  ],
+  "section3_image": "/images/team-collaboration.webp",
+  "section3_image_alt": "Valora leadership collaborating around a design table",
+  "section3_cta_label": "Meet the Team"
 }

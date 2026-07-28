@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import SolutionLayout from '../layouts/SolutionLayout.astro';
 import { netlifyImage } from '../lib/netlifyImage';
-import { US_REGIONS, US_GRID_ROWS, US_GRID_COLS, CANADA_REGION } from '../lib/usRegions';
+import { US_REGIONS, CANADA_REGION } from '../lib/usRegions';
 import teamData from '../content/settings/team.json';
 
 const allMembers = await getCollection('team');
@@ -22,24 +22,45 @@ function initials(name: string): string {
 const allReps = await getCollection('reps');
 
 // One rep can cover several region codes (e.g. Alaska + Arkansas + Colorado),
-// so we invert their `regions` lists into a single code → rep lookup.
-const repByCode = new Map<string, (typeof allReps)[number]['data']>();
+// and a region can have more than one rep (e.g. VA has both Wendy and Martha
+// Vlahakis), so we invert everyone's `regions` lists into a code → reps[] lookup.
+const repsByCode = new Map<string, (typeof allReps)[number]['data'][]>();
 for (const rep of allReps) {
   for (const code of rep.data.regions) {
-    repByCode.set(code, rep.data);
+    const existing = repsByCode.get(code);
+    if (existing) existing.push(rep.data);
+    else repsByCode.set(code, [rep.data]);
   }
 }
 
-const tiles = US_REGIONS.map((region) => ({
+// Only regions an actual rep covers show up in the dropdown — driven entirely by
+// the `reps` collection, so assigning a new region to a rep in the CMS is enough
+// to add it here; nothing is hardcoded.
+const regions = US_REGIONS.map((region) => ({
   ...region,
-  rep: repByCode.get(region.code) ?? null,
-}));
+  reps: repsByCode.get(region.code) ?? [],
+})).filter((region) => region.reps.length > 0);
 
-const canadaRep = repByCode.get(CANADA_REGION.code) ?? null;
+const canadaReps = repsByCode.get(CANADA_REGION.code) ?? [];
 
-// Fed to the client script so tile clicks / the dropdown can update the panel without a page reload.
+// Resolve photos through Netlify's image CDN once, server-side, since the result
+// panel is built client-side from this JSON and has no access to `netlifyImage`.
+function toRepPayload(rep: (typeof allReps)[number]['data']) {
+  return {
+    name: rep.name,
+    company: rep.company,
+    email: rep.email,
+    phone: rep.phone,
+    photo: rep.photo ? netlifyImage(rep.photo, { width: 200 }) : null,
+  };
+}
+
+// Fed to the client script so the dropdown can update the result panel without a page reload.
 const regionData = Object.fromEntries(
-  [...tiles, { ...CANADA_REGION, rep: canadaRep }].map((r) => [r.code, { label: r.label, rep: r.rep }])
+  [...regions, ...(canadaReps.length > 0 ? [{ ...CANADA_REGION, reps: canadaReps }] : [])].map((r) => [
+    r.code,
+    { label: r.label, reps: r.reps.map(toRepPayload) },
+  ])
 );
 ---
 
@@ -97,117 +118,77 @@ const regionData = Object.fromEntries(
   </section>
 
   <!-- Rep locator -->
-  <section id="reps" class="bg-cream py-16 md:py-20 px-6 md:px-16 border-t border-dark/10">
-    <div class="max-w-7xl mx-auto">
+  <section id="reps" class="bg-dark py-20 md:py-28 px-6 md:px-16">
+    <div class="max-w-xl mx-auto text-center">
       <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-4">
         Find Your Rep
       </p>
-      <h2 class="reveal font-heading text-dark text-3xl md:text-4xl font-light leading-[1.2] mb-4 delay-100 max-w-2xl">
+      <h2 class="reveal font-heading text-cream text-3xl md:text-4xl font-light leading-[1.2] mb-4 delay-100">
         Every region has a dedicated representative.
       </h2>
-      <p class="reveal font-body text-dark/70 text-sm md:text-base leading-relaxed mb-10 max-w-2xl delay-200">
-        Select a region on the map — or use the dropdown — to see who to reach out to directly.
+      <p class="reveal font-body text-cream/60 text-sm md:text-base leading-relaxed mb-12 delay-200">
+        Choose your region below to see who to reach out to directly.
       </p>
 
-      <div class="reveal delay-300 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 items-start">
+      <!--
+        Custom combobox instead of a native <select>: the only way to find a rep, so it's
+        built to feel like the page's main event, not a form afterthought — and a native
+        select's option list is positioned by the browser (it can flip and open upward),
+        which fought the deliberate layout here. This version always opens directly below
+        the trigger and scrolls internally instead.
+      -->
+      <div class="reveal delay-300 relative max-w-sm mx-auto" id="region-picker">
+        <p class="font-body text-[11px] tracking-widest2 uppercase text-cream/40 mb-2" id="region-picker-label">
+          Select your region
+        </p>
+        <button
+          type="button"
+          id="region-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-labelledby="region-picker-label region-trigger"
+          class="w-full flex items-center justify-center gap-2 bg-transparent border-b border-cream/25 pb-3
+                 font-heading text-2xl md:text-3xl font-light text-cream
+                 focus:outline-none focus:border-gold transition-colors duration-300"
+        >
+          <span id="region-trigger-value" class="text-cream/50">Choose…</span>
+          <span aria-hidden="true" id="region-trigger-caret" class="text-gold text-xs shrink-0 transition-transform duration-300">▾</span>
+        </button>
 
-        <!-- Map -->
-        <div>
-          <!-- Accessible / mobile-friendly alternative to clicking tiles -->
-          <div class="mb-6 max-w-sm">
-            <label class="font-body text-xs text-dark/60 tracking-wide" for="region-select">
-              Or choose your region
-            </label>
-            <div class="relative mt-1">
-              <select
-                id="region-select"
-                class="w-full appearance-none border border-dark/20 bg-transparent px-3 py-2.5 text-sm text-dark
-                       focus:outline-none focus:border-teal transition-colors duration-200 pr-8"
-              >
-                <option value="" selected disabled>Select a region…</option>
-                {tiles.map((t) => <option value={t.code}>{t.label}</option>)}
-                <option value={CANADA_REGION.code}>{CANADA_REGION.label}</option>
-              </select>
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dark/40 text-xs">▾</span>
-            </div>
-          </div>
-
-          <div
-            class="region-grid grid gap-1"
-            style={`grid-template-columns: repeat(${US_GRID_COLS}, minmax(0, 1fr)); grid-template-rows: repeat(${US_GRID_ROWS}, minmax(0, 1fr));`}
-          >
-            {tiles.map((t) => (
-              <button
-                type="button"
-                class={`region-tile aspect-square flex items-center justify-center border text-center transition-colors duration-200
-                        font-body text-[9px] md:text-[10px] tracking-wide uppercase leading-tight px-0.5
-                        ${t.rep ? 'border-teal/50 bg-teal/10 text-teal hover:bg-teal hover:text-cream' : 'border-dark/15 bg-dark/5 text-dark/40 hover:border-dark/30'}`}
-                style={`grid-column: ${t.col + 1}; grid-row: ${t.row + 1};`}
-                data-code={t.code}
-                aria-label={t.label}
-              >
-                {t.code}
-              </button>
-            ))}
-          </div>
-
-          <!-- Canada — not part of the US grid, kept right beside it so it doesn't read as an afterthought -->
-          <div class="mt-3">
-            <button
-              type="button"
-              data-code={CANADA_REGION.code}
-              class={`region-tile inline-flex items-center gap-2 border px-4 py-2.5 transition-colors duration-200
-                      font-body text-xs tracking-widest2 uppercase
-                      ${canadaRep ? 'border-teal/50 bg-teal/10 text-teal hover:bg-teal hover:text-cream' : 'border-dark/15 bg-dark/5 text-dark/40 hover:border-dark/30'}`}
-            >
+        <ul
+          id="region-listbox"
+          role="listbox"
+          aria-labelledby="region-picker-label"
+          tabindex="-1"
+          class="hidden absolute inset-x-0 top-full z-30 mt-3 max-h-64 overflow-y-auto
+                 border border-cream/15 bg-dark shadow-xl shadow-black/40 py-2 text-left"
+        >
+          {regions.map((r) => (
+            <li role="option" id={`region-option-${r.code}`} data-code={r.code}
+                class="px-4 py-2 font-body text-sm text-cream/75 cursor-pointer transition-colors duration-150 hover:bg-cream/10 hover:text-cream">
+              {r.label}
+            </li>
+          ))}
+          {canadaReps.length > 0 && (
+            <li role="option" id={`region-option-${CANADA_REGION.code}`} data-code={CANADA_REGION.code}
+                class="px-4 py-2 font-body text-sm text-cream/75 cursor-pointer transition-colors duration-150 hover:bg-cream/10 hover:text-cream border-t border-cream/10 mt-1 pt-3">
               {CANADA_REGION.label}
-            </button>
-          </div>
+            </li>
+          )}
+        </ul>
+      </div>
 
-          <!-- Legend -->
-          <div class="flex items-center gap-6 mt-5">
-            <span class="flex items-center gap-2 font-body text-[11px] text-dark/60 uppercase tracking-wide">
-              <span class="w-3 h-3 border border-teal/50 bg-teal/10"></span> Rep assigned
-            </span>
-            <span class="flex items-center gap-2 font-body text-[11px] text-dark/60 uppercase tracking-wide">
-              <span class="w-3 h-3 border border-dark/15 bg-dark/5"></span> Coming soon
-            </span>
-          </div>
+      <!-- Result -->
+      <div id="rep-panel" class="reveal delay-400 mt-14">
+        <p id="rep-panel-empty" class="font-body text-cream/35 text-sm leading-relaxed">
+          Your rep's contact details will appear here once you choose a region.
+        </p>
+
+        <div id="rep-panel-content" class="hidden">
+          <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-8" id="rep-panel-region"></p>
+          <!-- Populated client-side: one block per rep, since a region can have more than one (e.g. Virginia). -->
+          <div id="rep-panel-contacts" class="space-y-10"></div>
         </div>
-
-        <!-- Rep panel -->
-        <div id="rep-panel" class="border border-dark/15 bg-white p-8 min-h-[260px] flex flex-col justify-center">
-          <p id="rep-panel-empty" class="font-body text-dark/50 text-sm leading-relaxed">
-            Select a region on the map or from the dropdown to see the representative for that area.
-          </p>
-
-          <div id="rep-panel-content" class="hidden">
-            <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-3" id="rep-panel-region"></p>
-            <h3 class="font-heading text-dark text-2xl font-light leading-tight mb-4" id="rep-panel-name"></h3>
-            <dl class="space-y-3 font-body text-sm">
-              <div>
-                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Company</dt>
-                <dd class="text-dark" id="rep-panel-company"></dd>
-              </div>
-              <div>
-                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Email</dt>
-                <dd><a class="text-teal hover:underline" id="rep-panel-email"></a></dd>
-              </div>
-              <div>
-                <dt class="text-dark/50 text-[11px] tracking-widest2 uppercase mb-0.5">Phone</dt>
-                <dd><a class="text-teal hover:underline" id="rep-panel-phone"></a></dd>
-              </div>
-            </dl>
-          </div>
-
-          <div id="rep-panel-pending" class="hidden">
-            <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-3" id="rep-panel-pending-region"></p>
-            <p class="font-body text-dark/60 text-sm leading-relaxed">
-              We're still assigning a dedicated representative for this region. Reach out through the contact form and we'll route your inquiry directly.
-            </p>
-          </div>
-        </div>
-
       </div>
 
       <script type="application/json" id="region-data" set:html={JSON.stringify(regionData)} />
@@ -236,80 +217,235 @@ const regionData = Object.fromEntries(
     company: string;
     email: string;
     phone: string;
+    photo: string | null;
   }
   interface RegionEntry {
     label: string;
-    rep: RepData | null;
+    reps: RepData[];
   }
 
   const dataEl = document.getElementById('region-data');
   const regionData: Record<string, RegionEntry> = dataEl ? JSON.parse(dataEl.textContent ?? '{}') : {};
 
-  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('.region-tile'));
-  const select = document.getElementById('region-select') as HTMLSelectElement | null;
+  const picker   = document.getElementById('region-picker');
+  const trigger  = document.getElementById('region-trigger') as HTMLButtonElement | null;
+  const triggerValue = document.getElementById('region-trigger-value');
+  const triggerCaret = document.getElementById('region-trigger-caret');
+  const listbox  = document.getElementById('region-listbox');
+  const options  = listbox ? Array.from(listbox.querySelectorAll<HTMLLIElement>('[role="option"]')) : [];
 
   const panelEmpty   = document.getElementById('rep-panel-empty');
   const panelContent = document.getElementById('rep-panel-content');
-  const panelPending  = document.getElementById('rep-panel-pending');
 
-  const elRegion  = document.getElementById('rep-panel-region');
-  const elName    = document.getElementById('rep-panel-name');
-  const elCompany = document.getElementById('rep-panel-company');
-  const elEmail   = document.getElementById('rep-panel-email') as HTMLAnchorElement | null;
-  const elPhone   = document.getElementById('rep-panel-phone') as HTMLAnchorElement | null;
-  const elPendingRegion = document.getElementById('rep-panel-pending-region');
+  const elRegion   = document.getElementById('rep-panel-region');
+  const elContacts = document.getElementById('rep-panel-contacts');
+
+  // Mirrors the initials placeholder used for team members without a headshot,
+  // so the rep card reads as part of the same visual family as the grid above.
+  function initials(name: string): string {
+    return name
+      .split(' ')
+      .map((part) => part[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+  }
+
+  function dtDd(label: string, valueEl: HTMLElement): HTMLDivElement {
+    const row = document.createElement('div');
+    const dt = document.createElement('dt');
+    dt.className = 'text-cream/40 text-[11px] tracking-widest2 uppercase mb-0.5';
+    dt.textContent = label;
+    const dd = document.createElement('dd');
+    dd.appendChild(valueEl);
+    row.append(dt, dd);
+    return row;
+  }
+
+  function renderContact(rep: RepData): HTMLDivElement {
+    const wrap = document.createElement('div');
+    wrap.className = 'text-center';
+
+    let portrait: HTMLElement;
+    if (rep.photo) {
+      const img = document.createElement('img');
+      img.className = 'w-20 h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-gold/40';
+      img.src = rep.photo;
+      img.alt = rep.name;
+      img.loading = 'lazy';
+      portrait = img;
+    } else {
+      const initial = document.createElement('span');
+      initial.className = 'font-script text-gold/70 text-4xl block mb-1';
+      initial.textContent = initials(rep.name);
+      portrait = initial;
+    }
+
+    const name = document.createElement('h3');
+    name.className = 'font-heading text-cream text-2xl font-light leading-tight';
+    name.textContent = rep.name;
+
+    const divider = document.createElement('span');
+    divider.className = 'w-16 h-px bg-gold/70 mx-auto my-4 block';
+
+    const company = document.createElement('span');
+    company.className = 'text-cream';
+    company.textContent = rep.company;
+
+    const email = document.createElement('a');
+    email.className = 'text-teal hover:underline';
+    email.textContent = rep.email;
+    email.href = `mailto:${rep.email}`;
+
+    const phone = document.createElement('a');
+    phone.className = 'text-teal hover:underline';
+    phone.textContent = rep.phone;
+    phone.href = `tel:${rep.phone.replace(/[^\d+]/g, '')}`;
+
+    const dl = document.createElement('dl');
+    dl.className = 'space-y-3 font-body text-sm';
+    dl.append(dtDd('Company', company), dtDd('Email', email), dtDd('Phone', phone));
+
+    wrap.append(portrait, name, divider, dl);
+    return wrap;
+  }
 
   function selectRegion(code: string) {
     const entry = regionData[code];
     if (!entry) return;
 
-    tiles.forEach((t) => t.classList.toggle('is-active', t.dataset.code === code));
-    if (select) select.value = code;
-
     panelEmpty?.classList.add('hidden');
+    panelContent?.classList.remove('hidden');
 
-    if (entry.rep) {
-      panelPending?.classList.add('hidden');
-      panelContent?.classList.remove('hidden');
-
-      if (elRegion) elRegion.textContent = entry.label;
-      if (elName) elName.textContent = entry.rep.name;
-      if (elCompany) elCompany.textContent = entry.rep.company;
-      if (elEmail) {
-        elEmail.textContent = entry.rep.email;
-        elEmail.href = `mailto:${entry.rep.email}`;
-      }
-      if (elPhone) {
-        elPhone.textContent = entry.rep.phone;
-        elPhone.href = `tel:${entry.rep.phone.replace(/[^\d+]/g, '')}`;
-      }
-    } else {
-      panelContent?.classList.add('hidden');
-      panelPending?.classList.remove('hidden');
-      if (elPendingRegion) elPendingRegion.textContent = entry.label;
+    if (elRegion) elRegion.textContent = entry.label;
+    if (elContacts) {
+      elContacts.replaceChildren(...entry.reps.map(renderContact));
     }
   }
 
-  tiles.forEach((tile) => {
-    tile.addEventListener('click', () => {
-      if (tile.dataset.code) selectRegion(tile.dataset.code);
-    });
+  // Custom listbox interaction (ARIA "collapsible dropdown listbox" pattern) — the
+  // trigger only opens/closes; once open, DOM focus moves onto the listbox itself so
+  // arrow keys, Home/End, and typeahead all work without re-wiring the trigger.
+  let activeIndex = -1;
+  let typeahead = '';
+  let typeaheadTimer: ReturnType<typeof setTimeout> | undefined;
+
+  function setActiveIndex(index: number) {
+    if (options.length === 0 || !listbox) return;
+    activeIndex = (index + options.length) % options.length;
+    const active = options[activeIndex];
+    options.forEach((o) => o.classList.remove('bg-cream/10', 'text-cream'));
+    active.classList.add('bg-cream/10', 'text-cream');
+    listbox.setAttribute('aria-activedescendant', active.id);
+    active.scrollIntoView({ block: 'nearest' });
+  }
+
+  function openListbox() {
+    if (!listbox || !trigger) return;
+    listbox.classList.remove('hidden');
+    trigger.setAttribute('aria-expanded', 'true');
+    triggerCaret?.classList.add('rotate-180');
+    const selected = options.findIndex((o) => o.getAttribute('aria-selected') === 'true');
+    setActiveIndex(selected >= 0 ? selected : 0);
+    listbox.focus();
+  }
+
+  function closeListbox(focusTrigger = false) {
+    if (!listbox || !trigger) return;
+    listbox.classList.add('hidden');
+    trigger.setAttribute('aria-expanded', 'false');
+    triggerCaret?.classList.remove('rotate-180');
+    listbox.removeAttribute('aria-activedescendant');
+    activeIndex = -1;
+    if (focusTrigger) trigger.focus();
+  }
+
+  function isOpen() {
+    return !listbox?.classList.contains('hidden');
+  }
+
+  function choose(option: HTMLLIElement | undefined) {
+    if (!option) return;
+    const code = option.dataset.code;
+    if (!code) return;
+
+    options.forEach((o) => o.removeAttribute('aria-selected'));
+    option.setAttribute('aria-selected', 'true');
+
+    if (triggerValue) {
+      triggerValue.textContent = option.textContent?.trim() ?? '';
+      triggerValue.classList.remove('text-cream/50');
+    }
+
+    closeListbox(true);
+    selectRegion(code);
+  }
+
+  trigger?.addEventListener('click', () => {
+    if (isOpen()) closeListbox();
+    else openListbox();
   });
 
-  select?.addEventListener('change', () => {
-    if (select.value) selectRegion(select.value);
+  trigger?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openListbox();
+    }
   });
 
-  // Deep link support: /team#reps?region=CODE, or just land on the section and pick from the map.
+  listbox?.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActiveIndex(activeIndex + 1);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActiveIndex(activeIndex - 1);
+        break;
+      case 'Home':
+        e.preventDefault();
+        setActiveIndex(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        setActiveIndex(options.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        choose(options[activeIndex]);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        closeListbox(true);
+        break;
+      case 'Tab':
+        closeListbox();
+        break;
+      default:
+        if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+          typeahead += e.key.toLowerCase();
+          clearTimeout(typeaheadTimer);
+          typeaheadTimer = setTimeout(() => { typeahead = ''; }, 600);
+          const match = options.findIndex((o) => o.textContent?.trim().toLowerCase().startsWith(typeahead));
+          if (match >= 0) setActiveIndex(match);
+        }
+    }
+  });
+
+  options.forEach((option, i) => {
+    option.addEventListener('click', () => choose(option));
+    option.addEventListener('mousemove', () => setActiveIndex(i));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (picker && !picker.contains(e.target as Node)) closeListbox();
+  });
+
+  // Deep link support: /team#reps, lands on the section so visitors can pick from the dropdown.
   if (window.location.hash === '#reps') {
     document.getElementById('reps')?.scrollIntoView();
   }
 </script>
-
-<style>
-  .region-tile.is-active {
-    background-color: var(--color-teal);
-    color: var(--color-cream);
-    border-color: var(--color-teal);
-  }
-</style>

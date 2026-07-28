@@ -27,6 +27,14 @@ collections:
           - { name: src, label: Image, widget: image }
           - { name: alt, label: Alt Text, widget: string }
           - { name: tag, label: Subcategory Tag, widget: string, required: false, hint: "e.g. Metal, Wood, Art — used as the filter on the solution's page. Leave blank to exclude from filtering." }
+      - name: category_descriptions
+        label: Gallery Filter Descriptions
+        widget: list
+        required: false
+        hint: "Optional text shown when a visitor clicks a tag filter above the gallery. The Tag here must exactly match a Subcategory Tag used above."
+        fields:
+          - { name: tag, label: Tag, widget: string, hint: "e.g. Metal" }
+          - { name: description, label: Description, widget: text }
       - name: documents
         label: Technical Documents
         widget: list
@@ -62,6 +70,7 @@ collections:
       - { name: company, label: Company, widget: string }
       - { name: email, label: Email, widget: string }
       - { name: phone, label: Telephone Number, widget: string }
+      - { name: photo, label: Photo, widget: image, required: false, hint: "Leave blank to show an initials placeholder" }
       - name: regions
         label: Regions Covered
         widget: select
@@ -159,24 +168,48 @@ collections:
         label: About Section
         file: src/content/settings/about.json
         fields:
-          - { name: eyebrow, label: Eyebrow Text, widget: string }
-          - { name: heading_before_em, label: "Heading — before italic", widget: string }
-          - { name: heading_em, label: "Heading — italic word", widget: string }
-          - { name: heading_after_em, label: "Heading — after italic", widget: string }
+          - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, hint: "Also shown as the closing tagline at the bottom of the full About page" }
+          - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string }
           - name: paragraphs
-            label: Body Paragraphs
+            label: "Homepage Teaser — Body Paragraphs"
             widget: list
             field: { name: text, label: Paragraph, widget: text }
-          - { name: image, label: Image, widget: image }
-          - { name: image_alt, label: Image Alt Text, widget: string }
-          - { name: dark_subtitle, label: "About Page — Chapter 1 Subtitle", widget: string }
-          - { name: dark_body, label: "About Page — Chapter 1 Body", widget: text }
-          - { name: dark_image, label: "About Page — Chapter 1 Background Photo", widget: image, hint: "Full-bleed photo behind the sticky text panel as the visitor scrolls" }
-          - { name: dark_image_alt, label: "About Page — Chapter 1 Photo Alt Text", widget: string }
-          - { name: page_subtitle, label: "About Page — Chapter 2 Subtitle", widget: string }
-          - { name: page_body, label: "About Page — Chapter 2 Body", widget: text }
-          - { name: page_image, label: "About Page — Chapter 2 Background Photo", widget: image, hint: "Full-bleed photo behind the sticky text panel as the visitor scrolls" }
-          - { name: page_image_alt, label: "About Page — Chapter 2 Photo Alt Text", widget: string }
+          - { name: image, label: "Homepage Teaser — Image", widget: image }
+          - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
+
+          - { name: page_eyebrow, label: "About Page — Eyebrow Text", widget: string }
+          - { name: page_heading, label: "About Page — Main Heading", widget: string }
+
+          - { name: section1_heading, label: "About Page — Section 1 Heading (The Origin & Role)", widget: string }
+          - name: section1_paragraphs
+            label: "About Page — Section 1 Paragraphs"
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: section1_image, label: "About Page — Section 1 Image", widget: image }
+          - { name: section1_image_alt, label: "About Page — Section 1 Image Alt Text", widget: string }
+
+          - { name: section2_heading, label: "About Page — Section 2 Heading", widget: string }
+          - { name: section2_intro, label: "About Page — Section 2 Intro Text", widget: text }
+          - name: section2_items
+            label: "About Page — Section 2 Feature List"
+            widget: list
+            hint: "e.g. Dedicated In-House Artisans, End-to-End Domestic Craft, Deliberate Materiality"
+            fields:
+              - { name: label, label: Item Label, widget: string }
+              - { name: text, label: Item Text, widget: text }
+          - { name: section2_image, label: "About Page — Section 2 Background Photo", widget: image, hint: "Short full-width photo band behind the heading + intro text — a visual pause between sections" }
+          - { name: section2_image_alt, label: "About Page — Section 2 Photo Alt Text", widget: string }
+
+          - { name: section3_heading, label: "About Page — Section 3 Heading (Leadership Behind the Brand)", widget: string }
+          - name: section3_paragraphs
+            label: "About Page — Section 3 Paragraphs"
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: section3_image, label: "About Page — Section 3 Image", widget: image }
+          - { name: section3_image_alt, label: "About Page — Section 3 Image Alt Text", widget: string }
+          - { name: section3_cta_label, label: "About Page — Section 3 Button Label", widget: string, hint: 'Links to the Team page, e.g. "Meet the Team"' }
 
       - name: art-curation
         label: Art Curation Section
@@ -192,15 +225,13 @@ collections:
             field: { name: text, label: Paragraph, widget: text }
           - { name: image, label: "Homepage Teaser — Image", widget: image }
           - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
-          - name: beats
-            label: "Art Curation Page — Scrolling Photo Sequence"
+          - { name: video_url, label: "Art Curation Page — Background Video (Vimeo Embed URL)", widget: string, hint: "From Vimeo: Share → Embed, copy the iframe's src URL, e.g. https://player.vimeo.com/video/123456789?h=abcdef" }
+          - name: video_captions
+            label: "Art Curation Page — Video Overlay Captions"
             widget: list
             min: 1
-            hint: "Each beat is one photo + one caption line, shown in order as the visitor scrolls down the Art Curation page"
-            fields:
-              - { name: src, label: Photo, widget: image }
-              - { name: alt, label: Alt Text, widget: string }
-              - { name: text, label: Caption, widget: string }
+            hint: "Short lines shown over the video, fading from one to the next automatically every few seconds"
+            field: { name: text, label: Caption, widget: string }
           - { name: page_heading, label: "Art Curation Page — Body Heading", widget: string }
           - name: page_paragraphs
             label: "Art Curation Page — Body Paragraphs"
@@ -219,11 +250,12 @@ collections:
           - { name: page_description, label: "Team Page — Description", widget: text }
 
       - name: join-team
-        label: "Join Team Section"
+        label: "Artist Submissions Section"
         file: src/content/settings/join-team.json
         fields:
-          - { name: heading_before_em, label: "Heading — start", widget: string, hint: 'e.g. "Join our team of "' }
-          - { name: heading_em, label: "Heading — italic phrase", widget: string, hint: 'e.g. "talented professionals"' }
+          - { name: heading_before_em, label: "Heading — start", widget: string, required: false, hint: 'Text before the italic phrase, e.g. "Join our team of ". Leave blank to start with the italic phrase.' }
+          - { name: heading_em, label: "Heading — italic phrase", widget: string, required: false, hint: 'Accent word/phrase in script font, e.g. "Artist"' }
+          - { name: heading_after_em, label: "Heading — end", widget: string, required: false, hint: 'Text after the italic phrase, e.g. " Submissions"' }
           - { name: body, label: "Body Text", widget: string, hint: 'Text shown before the email link, e.g. "Send us your portfolio to"' }
           - { name: email, label: "Contact Email", widget: string }
 
