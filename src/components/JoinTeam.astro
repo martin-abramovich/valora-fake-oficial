@@ -2,6 +2,7 @@
 import joinTeamData from '../content/settings/join-team.json';
 ---
 
+{joinTeamData.published && (
 <section class="bg-dark overflow-hidden">
   <div class="px-6 md:px-16 lg:px-24 py-16 md:py-20 text-center">
     <span class="ornament reveal block mb-5 text-gold text-sm" aria-hidden="true">✦</span>
@@ -16,3 +17,4 @@ import joinTeamData from '../content/settings/join-team.json';
     </p>
   </div>
 </section>
+)}

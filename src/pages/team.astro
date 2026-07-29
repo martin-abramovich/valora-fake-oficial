@@ -5,6 +5,10 @@ import { netlifyImage } from '../lib/netlifyImage';
 import { US_REGIONS, CANADA_REGION } from '../lib/usRegions';
 import teamData from '../content/settings/team.json';
 
+if (!teamData.published) {
+  return Astro.redirect('/');
+}
+
 const allMembers = await getCollection('team');
 const members = allMembers.sort((a, b) => a.data.order - b.data.order);
 

@@ -23,6 +23,38 @@ const solutions = defineCollection({
   }),
 });
 
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: z.object({
+    order: z.number(),
+    name: z.string(),
+    description: z.string(),
+    general_text: z.array(z.string()).optional(),
+    tags: z.array(z.string()).optional(),
+    images: z.array(z.object({
+      src: z.string(),
+      alt: z.string(),
+    })),
+  }),
+});
+
+const artists = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/artists' }),
+  schema: z.object({
+    order: z.number(),
+    name: z.string(),
+    discipline: z.string(),
+    description: z.string(),
+    bio: z.array(z.string()).optional(),
+    photo: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    images: z.array(z.object({
+      src: z.string(),
+      alt: z.string(),
+    })),
+  }),
+});
+
 const team = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: z.object({
@@ -46,6 +78,17 @@ const reps = defineCollection({
   }),
 });
 
+const resources = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/resources' }),
+  schema: z.object({
+    title: z.string(),
+    type: z.enum(['Catalog', 'Technical Spec Sheet', 'Other']),
+    category: z.string(),
+    subcategory: z.string().optional(),
+    file: z.string(),
+  }),
+});
+
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
@@ -56,4 +99,4 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { solutions, team, reps, blog };
+export const collections = { solutions, projects, artists, team, reps, blog, resources };

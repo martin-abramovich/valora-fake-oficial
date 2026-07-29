@@ -1,0 +1,192 @@
+---
+import { getCollection } from 'astro:content';
+import SolutionLayout from '../layouts/SolutionLayout.astro';
+import resourcesData from '../content/settings/resources.json';
+
+if (!resourcesData.published) {
+  return Astro.redirect('/');
+}
+
+const allSolutions = await getCollection('solutions');
+const solutionOrder = allSolutions
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((sol) => sol.data.title);
+
+const allResources = await getCollection('resources');
+
+// Category → its distinct subcategories (in first-seen order), used to build
+// the cascading Category → Subcategory filter. Blank subcategories are left
+// out of the second dropdown but the file still shows under "All".
+const subcategoriesByCategory: Record<string, string[]> = {};
+for (const res of allResources) {
+  const { category, subcategory } = res.data;
+  if (!subcategoriesByCategory[category]) subcategoriesByCategory[category] = [];
+  if (subcategory && !subcategoriesByCategory[category].includes(subcategory)) {
+    subcategoriesByCategory[category].push(subcategory);
+  }
+}
+
+// Categories that actually have at least one resource, ordered to match the
+// Bespoke Solutions grid — new solutions (and their PDFs) slot in automatically.
+const categories = Object.keys(subcategoriesByCategory).sort(
+  (a, b) => solutionOrder.indexOf(a) - solutionOrder.indexOf(b)
+);
+
+const resources = allResources.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<SolutionLayout title={`${resourcesData.page_heading} — Valora`} description={resourcesData.page_description}>
+
+  <!-- Title band -->
+  <section class="bg-dark pt-40 pb-20 md:pt-48 md:pb-24 px-6 md:px-16">
+    <div class="max-w-4xl mx-auto">
+      <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
+        Valora
+      </p>
+      <h1 class="reveal font-heading text-cream text-5xl md:text-7xl font-light leading-[1.05] mb-6 delay-100">
+        {resourcesData.page_heading}
+      </h1>
+      <p class="reveal font-body text-cream/80 text-sm md:text-base leading-relaxed max-w-2xl delay-200">
+        {resourcesData.page_description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Resource list -->
+  <section class="bg-cream py-16 md:py-20 px-6 md:px-16">
+    <div class="max-w-7xl mx-auto">
+
+      {categories.length > 0 && (
+        <>
+        <div class="reveal flex flex-wrap gap-4 mb-12">
+          <select
+            id="resource-filter-category"
+            class="font-body text-xs tracking-widest2 uppercase px-5 py-3 border border-dark/25 bg-cream text-dark"
+          >
+            <option value="all">All Categories</option>
+            {categories.map((cat) => <option value={cat}>{cat}</option>)}
+          </select>
+
+          <select
+            id="resource-filter-subcategory"
+            class="font-body text-xs tracking-widest2 uppercase px-5 py-3 border border-dark/25 bg-cream text-dark disabled:opacity-40"
+            disabled
+          >
+            <option value="all">All Subcategories</option>
+          </select>
+        </div>
+
+        <script type="application/json" id="resource-subcategory-data" is:inline set:html={JSON.stringify(subcategoriesByCategory)} />
+        </>
+      )}
+
+      {resources.length === 0 ? (
+        <p class="reveal font-body text-dark/60 text-sm md:text-base">
+          No downloadable resources yet — check back soon.
+        </p>
+      ) : (
+        <div class="resource-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {resources.map((res, i) => (
+            <a
+              href={res.data.file}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`resource-card reveal group flex flex-col justify-between gap-6 border border-dark/25 p-6 transition-colors duration-300 hover:border-teal delay-${(i % 3) * 100 + 100}`}
+              data-category={res.data.category}
+              data-subcategory={res.data.subcategory ?? ''}
+            >
+              <div>
+                <p class="font-body text-[11px] tracking-widest2 text-teal uppercase mb-3">
+                  {res.data.type}
+                </p>
+                <p class="font-heading text-dark text-lg md:text-xl font-light leading-snug transition-colors duration-300 group-hover:text-teal">
+                  {res.data.title}
+                </p>
+              </div>
+              <div class="flex items-center gap-3 text-dark/60 group-hover:text-teal transition-colors duration-300">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="flex-none">
+                  <path d="M8 1V11M8 11L4 7M8 11L12 7M2 14H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="font-body text-[11px] tracking-widest2 uppercase">Download PDF</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <p class="resource-empty-message hidden font-body text-dark/60 text-sm md:text-base mt-10">
+        No resources match this filter yet.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- Closing banner -->
+  <section class="bg-white py-16 md:py-20 px-6 md:px-16">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8">
+      <div class="reveal flex flex-col sm:flex-row gap-4">
+        <a href="/#contact" class="btn-filled-teal sm:whitespace-nowrap">
+          Bring your vision to life
+        </a>
+        <a href="/#solutions" class="btn-filled-teal sm:whitespace-nowrap">
+          Discover our bespoke solutions
+        </a>
+      </div>
+    </div>
+  </section>
+
+</SolutionLayout>
+
+<script>
+  const categorySelect = document.getElementById('resource-filter-category') as HTMLSelectElement | null;
+  const subcategorySelect = document.getElementById('resource-filter-subcategory') as HTMLSelectElement | null;
+  const dataEl = document.getElementById('resource-subcategory-data');
+  const subcategoriesByCategory: Record<string, string[]> = dataEl ? JSON.parse(dataEl.textContent ?? '{}') : {};
+
+  const cards = document.querySelectorAll<HTMLAnchorElement>('.resource-card');
+  const emptyMessage = document.querySelector<HTMLElement>('.resource-empty-message');
+
+  function rebuildSubcategoryOptions(category: string) {
+    if (!subcategorySelect) return;
+    const subcats = category === 'all' ? [] : (subcategoriesByCategory[category] ?? []);
+
+    subcategorySelect.innerHTML = '';
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Subcategories';
+    subcategorySelect.appendChild(allOption);
+
+    subcats.forEach((sub) => {
+      const option = document.createElement('option');
+      option.value = sub;
+      option.textContent = sub;
+      subcategorySelect.appendChild(option);
+    });
+
+    subcategorySelect.disabled = subcats.length === 0;
+  }
+
+  function applyFilters() {
+    const category = categorySelect?.value ?? 'all';
+    const subcategory = subcategorySelect?.value ?? 'all';
+
+    let visibleCount = 0;
+    cards.forEach((card) => {
+      const matchesCategory = category === 'all' || card.dataset.category === category;
+      const matchesSubcategory = subcategory === 'all' || card.dataset.subcategory === subcategory;
+      const show = matchesCategory && matchesSubcategory;
+      card.classList.toggle('hidden', !show);
+      if (show) visibleCount += 1;
+    });
+
+    emptyMessage?.classList.toggle('hidden', visibleCount > 0);
+  }
+
+  categorySelect?.addEventListener('change', () => {
+    rebuildSubcategoryOptions(categorySelect.value);
+    applyFilters();
+  });
+
+  subcategorySelect?.addEventListener('change', applyFilters);
+</script>

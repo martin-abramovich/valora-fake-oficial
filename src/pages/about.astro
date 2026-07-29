@@ -3,6 +3,10 @@ import SolutionLayout from '../layouts/SolutionLayout.astro';
 import aboutData from '../content/settings/about.json';
 import { netlifyImage } from '../lib/netlifyImage';
 
+if (!aboutData.published) {
+  return Astro.redirect('/');
+}
+
 const section2Intro = aboutData.section2_intro;
 ---
 

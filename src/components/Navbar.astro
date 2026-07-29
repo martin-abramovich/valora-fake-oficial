@@ -1,4 +1,12 @@
 ---
+import aboutData from '../content/settings/about.json';
+import artCurationData from '../content/settings/art-curation.json';
+import projectsData from '../content/settings/projects.json';
+import artistsData from '../content/settings/artists.json';
+import teamData from '../content/settings/team.json';
+import resourcesData from '../content/settings/resources.json';
+import contactData from '../content/settings/contact.json';
+
 export interface Props {
   // Pages that don't open on a dark hero (e.g. About) need the navbar to be
   // readable from scroll position 0, so it skips the transparent-until-scroll
@@ -9,16 +17,22 @@ export interface Props {
 const { solid = false } = Astro.props;
 
 // Rendered around the Team link, which gets an extra hover dropdown to the rep locator.
+// Filtered by each section's CMS "published" toggle, so an unpublished page's
+// link disappears from the nav along with the page itself.
 const navLinksBeforeTeam = [
-  { label: 'Home',              href: '/#hero' },
-  { label: 'About',             href: '/#about' },
-  { label: 'Art Curation',      href: '/#art-curation' },
-  { label: 'Bespoke solutions', href: '/#solutions' },
-];
+  { label: 'Home',              href: '/#hero',         published: true },
+  { label: 'About',             href: '/#about',        published: aboutData.published },
+  { label: 'Art Curation',      href: '/#art-curation', published: artCurationData.published },
+  { label: 'Bespoke solutions', href: '/#solutions',    published: true },
+  { label: 'Projects',          href: '/projects',      published: projectsData.published },
+  { label: 'Artists',           href: '/artists',       published: artistsData.published },
+].filter((link) => link.published);
 const navLinksAfterTeam = [
-  { label: 'Blog',    href: '/blog' },
-  { label: 'Contact', href: '/#contact' },
-];
+  { label: 'Resources', href: '/resources',  published: resourcesData.published },
+  { label: 'Blog',       href: '/blog',       published: true },
+  { label: 'Contact',    href: '/#contact',   published: contactData.published },
+].filter((link) => link.published);
+const showTeam = teamData.published;
 const teamLink = { label: 'Team', href: '/#team' };
 const findRepLink = { label: 'Find your rep', href: '/team#reps' };
 ---
@@ -46,6 +60,7 @@ const findRepLink = { label: 'Find your rep', href: '/team#reps' };
     ))}
 
     <!-- Team: hover reveals a dropdown straight to the rep locator -->
+    {showTeam && (
     <div class="relative group/team">
       <a
         href={teamLink.href}
@@ -68,6 +83,7 @@ const findRepLink = { label: 'Find your rep', href: '/team#reps' };
         </a>
       </div>
     </div>
+    )}
 
     {navLinksAfterTeam.map((link) => (
       <a
@@ -107,18 +123,22 @@ const findRepLink = { label: 'Find your rep', href: '/team#reps' };
     </a>
   ))}
 
+  {showTeam && (
   <a
     href={teamLink.href}
     class="mobile-link font-heading text-[2.156rem] text-cream/90 hover:text-gold transition-colors duration-200"
   >
     {teamLink.label}
   </a>
+  )}
+  {showTeam && (
   <a
     href={findRepLink.href}
     class="mobile-link font-heading text-lg tracking-widest2 uppercase text-cream/70 hover:text-gold transition-colors duration-200 -mt-6"
   >
     {findRepLink.label}
   </a>
+  )}
 
   {navLinksAfterTeam.map((link) => (
     <a

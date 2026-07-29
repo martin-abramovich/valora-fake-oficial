@@ -1,11 +1,11 @@
 ---
-import teamData from '../content/settings/team.json';
+import artistsData from '../content/settings/artists.json';
 import { netlifyImage } from '../lib/netlifyImage';
 ---
 
-{teamData.published && (
+{artistsData.published && (
 <section
-  id="team"
+  id="artists"
   class="bg-cream py-12 md:py-20 overflow-hidden"
 >
   <div class="flex flex-col md:flex-row md:items-center gap-10 md:gap-16 lg:gap-20">
@@ -14,8 +14,8 @@ import { netlifyImage } from '../lib/netlifyImage';
     <div class="reveal slide-left order-1 md:order-none px-6 md:px-0 md:shrink-0 md:w-[45%]">
       <div class="relative overflow-hidden aspect-5/4">
         <img
-          src={netlifyImage(teamData.image, { width: 1200 })}
-          alt={teamData.image_alt}
+          src={netlifyImage(artistsData.image, { width: 1200 })}
+          alt={artistsData.image_alt}
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy"
         />
@@ -26,19 +26,25 @@ import { netlifyImage } from '../lib/netlifyImage';
     <!-- Text column: padded right, gap to image -->
     <div class="reveal slide-right delay-200 order-2 md:order-none px-6 md:pr-16 lg:pr-20 md:pl-4 md:flex-1 min-w-0">
 
-      <span class="ornament block mb-6 text-gold text-sm" aria-hidden="true">✦</span>
-
-      <h2 class="font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-7">
-        {teamData.heading}
-      </h2>
-
-      <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed max-w-md">
-        {teamData.description}
+      <p class="font-body text-xs tracking-widest2 text-teal uppercase mb-6">
+        {artistsData.eyebrow}
       </p>
 
+      <h2 class="font-heading text-dark text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-8">
+        {artistsData.heading_before_em}<em class="font-script not-italic">{artistsData.heading_em}</em>{artistsData.heading_after_em}
+      </h2>
+
+      <div class="space-y-5">
+        {artistsData.paragraphs.map((para: string) => (
+          <p class="font-body text-dark/70 text-sm md:text-base leading-relaxed">
+            {para}
+          </p>
+        ))}
+      </div>
+
       <div class="reveal delay-300 mt-8">
-        <a href="/team" class="btn-outline-dark">
-          Discover us
+        <a href="/artists" class="btn-outline-dark">
+          Meet our artists
         </a>
       </div>
     </div>

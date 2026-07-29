@@ -9,6 +9,7 @@ const slides = heroData.background_images.map((img) => netlifyImage(img.src, { w
 const trackSlides = [...slides, slides[0]];
 ---
 
+{heroData.published && (
 <section
   id="hero"
   class="relative min-h-screen flex items-end overflow-hidden bg-dark"
@@ -59,6 +60,7 @@ const trackSlides = [...slides, slides[0]];
     <div class="reveal mt-8 w-12 h-px bg-gold delay-400" />
   </div>
 </section>
+)}
 
 <style>
   @keyframes hero-kenburns {

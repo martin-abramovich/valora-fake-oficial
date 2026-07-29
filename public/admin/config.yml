@@ -44,6 +44,69 @@ collections:
           - { name: label, label: Button Label, widget: string, hint: 'e.g. "Metal Frames — Spec Sheet"' }
           - { name: file, label: File, widget: file }
 
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: order, label: Order, widget: number, hint: "Position in the projects grid (1 = first)" }
+      - { name: name, label: Project Name, widget: string }
+      - { name: description, label: Brief Description, widget: text }
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        hint: "Match these to an Artist's Tags to link this project to them on their Artists page (e.g. \"Custom Mirrors\")"
+        field: { name: tag, label: Tag, widget: string }
+      - name: general_text
+        label: General Text
+        widget: list
+        required: false
+        hint: "Longer body copy shown on the project's individual page, below the title"
+        field: { name: text, label: Paragraph, widget: text }
+      - name: images
+        label: Gallery Images
+        widget: list
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt Text, widget: string }
+
+  - name: artists
+    label: Artists
+    label_singular: Artist
+    folder: src/content/artists
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: order, label: Order, widget: number, hint: "Position in the artists grid (1 = first)" }
+      - { name: name, label: Name, widget: string }
+      - { name: discipline, label: Discipline / Title, widget: string, hint: 'e.g. "Mixed-Media Artist", "Acoustic Sculptor"' }
+      - { name: description, label: Brief Description, widget: text, hint: "Shown on the artist's card and at the top of their page" }
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        hint: "Match these to a Project's Tags to link this artist to it (e.g. \"Custom Mirrors\"). Shown as related projects on the artist's page."
+        field: { name: tag, label: Tag, widget: string }
+      - name: bio
+        label: Full Bio
+        widget: list
+        required: false
+        hint: "Longer body copy shown on the artist's individual page, below the title"
+        field: { name: text, label: Paragraph, widget: text }
+      - { name: photo, label: Photo, widget: image, required: false, hint: "Leave blank to show an initials placeholder" }
+      - name: images
+        label: Gallery Images
+        widget: list
+        hint: "Photos of the artist's work"
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt Text, widget: string }
+
   - name: team
     label: Team
     label_singular: Team Member
@@ -132,6 +195,30 @@ collections:
           - { label: Wisconsin, value: WI }
           - { label: Wyoming, value: WY }
 
+  - name: resources
+    label: Resources
+    label_singular: Resource
+    folder: src/content/resources
+    create: true
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string, hint: 'Shown as the download button label, e.g. "Custom Mirrors & LED Catalog"' }
+      - name: type
+        label: Document Type
+        widget: select
+        options: [Catalog, "Technical Spec Sheet", Other]
+      - name: category
+        label: Category
+        widget: relation
+        collection: solutions
+        search_fields: [title]
+        display_fields: [title]
+        value_field: title
+        hint: "Pulled from the current Bespoke Solutions — feeds the Category filter on the Resources page"
+      - { name: subcategory, label: Subcategory, widget: string, required: false, hint: "e.g. Metal, Wood, Art — ideally matches a Subcategory Tag used on the selected Category's solution page. Leave blank to skip the subcategory filter for this file." }
+      - { name: file, label: PDF File, widget: file }
+
   - name: blog
     label: Blog
     label_singular: Post
@@ -153,9 +240,10 @@ collections:
         label: Hero Section
         file: src/content/settings/hero.json
         fields:
-          - { name: headline_before_em, label: "Headline — start", widget: string, hint: 'e.g. "Mastery "' }
+          - { name: published, label: "Show this section on the site?", widget: boolean, default: true }
+          - { name: headline_before_em, label: "Headline — start", widget: string, required: false, hint: 'e.g. "Mastery "' }
           - { name: headline_em, label: "Headline — italic word", widget: string, hint: 'e.g. "in"' }
-          - { name: headline_after_em, label: "Headline — end", widget: string, hint: 'e.g. " every detail."' }
+          - { name: headline_after_em, label: "Headline — end", widget: string, required: false, hint: 'e.g. " every detail."' }
           - { name: body, label: Body Text, widget: text, hint: "Each line break becomes a new line on screen" }
           - name: background_images
             label: Background Images (slider)
@@ -168,10 +256,11 @@ collections:
         label: About Section
         file: src/content/settings/about.json
         fields:
+          - { name: published, label: "Show this section on the home page and publish the /about page?", widget: boolean, default: true, hint: "Turning this off hides the homepage teaser AND takes the full About page offline." }
           - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
-          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, hint: "Also shown as the closing tagline at the bottom of the full About page" }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, required: false, hint: "Also shown as the closing tagline at the bottom of the full About page" }
           - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
-          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string, required: false }
           - name: paragraphs
             label: "Homepage Teaser — Body Paragraphs"
             widget: list
@@ -215,10 +304,11 @@ collections:
         label: Art Curation Section
         file: src/content/settings/art-curation.json
         fields:
+          - { name: published, label: "Show this section on the home page and publish the /art-curation page?", widget: boolean, default: true, hint: "Turning this off hides the homepage teaser AND takes the full Art Curation page offline." }
           - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
-          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, required: false }
           - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
-          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string, required: false }
           - name: paragraphs
             label: "Homepage Teaser — Body Paragraphs"
             widget: list
@@ -238,10 +328,47 @@ collections:
             widget: list
             field: { name: text, label: Paragraph, widget: text }
 
+      - name: projects
+        label: Projects Section
+        file: src/content/settings/projects.json
+        fields:
+          - { name: published, label: "Show this section on the home page and publish the /projects page?", widget: boolean, default: true, hint: "Turning this off hides the homepage teaser AND takes the full Projects page offline." }
+          - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, required: false }
+          - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string, required: false }
+          - name: paragraphs
+            label: "Homepage Teaser — Body Paragraphs"
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: image, label: "Homepage Teaser — Image", widget: image }
+          - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
+          - { name: page_heading, label: "Projects Page — Heading", widget: string }
+          - { name: page_description, label: "Projects Page — Description", widget: text }
+
+      - name: artists
+        label: Artists Section
+        file: src/content/settings/artists.json
+        fields:
+          - { name: published, label: "Show this section on the home page and publish the /artists page?", widget: boolean, default: true, hint: "Turning this off hides the homepage teaser AND takes the full Artists page offline." }
+          - { name: eyebrow, label: "Homepage Teaser — Eyebrow Text", widget: string }
+          - { name: heading_before_em, label: "Homepage Teaser — Heading (before italic)", widget: string, required: false }
+          - { name: heading_em, label: "Homepage Teaser — Heading (italic word)", widget: string }
+          - { name: heading_after_em, label: "Homepage Teaser — Heading (after italic)", widget: string, required: false }
+          - name: paragraphs
+            label: "Homepage Teaser — Body Paragraphs"
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: image, label: "Homepage Teaser — Image", widget: image }
+          - { name: image_alt, label: "Homepage Teaser — Image Alt Text", widget: string }
+          - { name: page_heading, label: "Artists Page — Heading", widget: string }
+          - { name: page_description, label: "Artists Page — Description", widget: text }
+
       - name: team
         label: Team Section
         file: src/content/settings/team.json
         fields:
+          - { name: published, label: "Show this section on the home page and publish the /team page?", widget: boolean, default: true, hint: "Turning this off hides the homepage teaser AND takes the full Team page offline." }
           - { name: heading, label: "Homepage Teaser — Heading", widget: string }
           - { name: description, label: "Homepage Teaser — Description", widget: text }
           - { name: image, label: "Homepage Teaser — Image", widget: image }
@@ -249,10 +376,19 @@ collections:
           - { name: page_heading, label: "Team Page — Heading", widget: string }
           - { name: page_description, label: "Team Page — Description", widget: text }
 
+      - name: resources
+        label: Resources Page
+        file: src/content/settings/resources.json
+        fields:
+          - { name: published, label: "Publish the /resources page?", widget: boolean, default: true }
+          - { name: page_heading, label: "Page Heading", widget: string }
+          - { name: page_description, label: "Page Description", widget: text }
+
       - name: join-team
         label: "Artist Submissions Section"
         file: src/content/settings/join-team.json
         fields:
+          - { name: published, label: "Show this section on the site?", widget: boolean, default: true }
           - { name: heading_before_em, label: "Heading — start", widget: string, required: false, hint: 'Text before the italic phrase, e.g. "Join our team of ". Leave blank to start with the italic phrase.' }
           - { name: heading_em, label: "Heading — italic phrase", widget: string, required: false, hint: 'Accent word/phrase in script font, e.g. "Artist"' }
           - { name: heading_after_em, label: "Heading — end", widget: string, required: false, hint: 'Text after the italic phrase, e.g. " Submissions"' }
@@ -263,7 +399,8 @@ collections:
         label: Contact Section
         file: src/content/settings/contact.json
         fields:
-          - { name: heading_before_em, label: "Heading — before italic", widget: string }
+          - { name: published, label: "Show this section on the site?", widget: boolean, default: true }
+          - { name: heading_before_em, label: "Heading — before italic", widget: string, required: false }
           - { name: heading_em, label: "Heading — italic word", widget: string }
           - { name: body, label: Body Text, widget: text }
           - name: roles

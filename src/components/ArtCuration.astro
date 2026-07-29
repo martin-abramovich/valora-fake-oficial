@@ -3,6 +3,7 @@ import artCurationData from '../content/settings/art-curation.json';
 import { netlifyImage } from '../lib/netlifyImage';
 ---
 
+{artCurationData.published && (
 <section
   id="art-curation"
   class="bg-cream py-12 md:py-20 overflow-hidden"
@@ -53,3 +54,4 @@ import { netlifyImage } from '../lib/netlifyImage';
   <!-- Gold separator: Art Curation → Solutions -->
   <div class="mt-12 md:mt-20 mx-6 md:mx-16 h-px bg-gold/70" />
 </section>
+)}

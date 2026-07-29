@@ -1,0 +1,15 @@
+{
+  "published": true,
+  "eyebrow": "Featured Work",
+  "heading_before_em": "Discover Our ",
+  "heading_em": "Projects",
+  "heading_after_em": "",
+  "paragraphs": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  ],
+  "image": "/images/rustic-serenity-at-a-colorado-ranch.png",
+  "image_alt": "Completed interior project featuring custom mirrors and art",
+  "page_heading": "Our Projects",
+  "page_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A showcase of completed spaces where craftsmanship, art, and interior design come together."
+}

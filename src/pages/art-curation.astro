@@ -2,6 +2,10 @@
 import SolutionLayout from '../layouts/SolutionLayout.astro';
 import artCurationData from '../content/settings/art-curation.json';
 
+if (!artCurationData.published) {
+  return Astro.redirect('/');
+}
+
 // Ambient looping background video (Vimeo's "background" player mode strips
 // controls/title/byline and forces autoplay+loop+muted), with a short set of
 // captions that cross-fade on a timer — independent of scroll, so the whole

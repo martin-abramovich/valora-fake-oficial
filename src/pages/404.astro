@@ -1,0 +1,44 @@
+---
+import SolutionLayout from '../layouts/SolutionLayout.astro';
+---
+
+<SolutionLayout
+  title="Page not found — Valora"
+  description="This page has stepped out of the collection."
+  navbarSolid={true}
+>
+
+  <section class="min-h-screen flex items-center justify-center bg-cream pt-36 pb-20 px-6 overflow-hidden">
+    <div class="max-w-2xl text-center">
+
+      <p class="reveal font-body text-xs tracking-widest2 text-teal uppercase mb-6">
+        Error 404
+      </p>
+
+      <h1 class="reveal font-heading text-teal text-8xl md:text-[10rem] font-light leading-none delay-100">
+        404
+      </h1>
+
+      <div class="reveal delay-200 w-16 h-px bg-gold/70 mx-auto my-8 md:my-10" />
+
+      <h2 class="reveal delay-200 font-heading text-dark text-3xl md:text-4xl font-light leading-[1.15] mb-6">
+        This page has stepped out of <em class="font-script not-italic text-4xl md:text-5xl">the collection</em>
+      </h2>
+
+      <p class="reveal delay-300 font-body text-dark/70 text-sm md:text-base leading-relaxed max-w-md mx-auto mb-10">
+        The piece you're looking for may have been moved, renamed, or never existed. Let's guide you back to something remarkable.
+      </p>
+
+      <div class="reveal delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/" class="btn-filled-teal sm:whitespace-nowrap">
+          Return home
+        </a>
+        <a href="/#solutions" class="btn-outline-dark sm:whitespace-nowrap">
+          Explore our solutions
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</SolutionLayout>

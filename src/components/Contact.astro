@@ -5,6 +5,7 @@ import ContactForm from './ContactForm.astro';
 const bodyLines = contactData.body.split('\n');
 ---
 
+{contactData.published && (
 <section
   id="contact"
   class="bg-cream overflow-hidden"
@@ -59,3 +60,4 @@ const bodyLines = contactData.body.split('\n');
     </div>
   </div>
 </section>
+)}
