@@ -1,7 +1,7 @@
 ---
-title: "Acoustic Panels Catalog"
+title: "Printed Acoustic Panels Catalog"
 type: Catalog
-category: "Acoustic Panels"
+category: "Printed Acoustic Panels"
 subcategory: Fluted
 file: "#"
 ---

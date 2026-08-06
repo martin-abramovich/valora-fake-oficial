@@ -55,7 +55,7 @@ function toRepPayload(rep: (typeof allReps)[number]['data']) {
     company: rep.company,
     email: rep.email,
     phone: rep.phone,
-    photo: rep.photo ? netlifyImage(rep.photo, { width: 200 }) : null,
+    photo: rep.photo ? netlifyImage(rep.photo, { width: 300 }) : null,
   };
 }
 
@@ -93,10 +93,10 @@ const regionData = Object.fromEntries(
           <article class={`reveal delay-${(i % 3) * 100 + 100}`}>
 
             <!-- Photo slot: real headshot if uploaded, otherwise an initials placeholder -->
-            <div class="relative overflow-hidden aspect-4/5 bg-dark/5 mb-5">
+            <div class="relative overflow-hidden aspect-4/5 bg-dark/5 mb-5 max-w-60">
               {member.data.photo ? (
                 <img
-                  src={netlifyImage(member.data.photo, { width: 700 })}
+                  src={netlifyImage(member.data.photo, { width: 480 })}
                   alt={member.data.name}
                   class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   loading="lazy"
@@ -274,14 +274,14 @@ const regionData = Object.fromEntries(
     let portrait: HTMLElement;
     if (rep.photo) {
       const img = document.createElement('img');
-      img.className = 'w-20 h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-gold/40';
+      img.className = 'w-36 h-36 rounded-full object-cover mx-auto mb-3 ring-2 ring-gold/40';
       img.src = rep.photo;
       img.alt = rep.name;
       img.loading = 'lazy';
       portrait = img;
     } else {
       const initial = document.createElement('span');
-      initial.className = 'font-script text-gold/70 text-4xl block mb-1';
+      initial.className = 'font-script text-gold/70 text-6xl block mb-3';
       initial.textContent = initials(rep.name);
       portrait = initial;
     }

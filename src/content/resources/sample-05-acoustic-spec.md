@@ -1,7 +1,7 @@
 ---
-title: "Acoustic Panels — Technical Spec Sheet"
+title: "Printed Acoustic Panels — Technical Spec Sheet"
 type: Technical Spec Sheet
-category: "Acoustic Panels"
+category: "Printed Acoustic Panels"
 subcategory: Slatted
 file: "#"
 ---

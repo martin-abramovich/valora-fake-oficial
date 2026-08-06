@@ -1,22 +1,52 @@
 ---
 order: 6
 title: Unique Architectural Materials
-description: Where structural flexibility meets rich tactile dimension. Bespoke
-  three-dimensional printable surfaces designed to seamlessly wrap complex
-  curves and columns.
+description: A breakthrough in structural flexibility and rich tactile
+  dimension. Our bespoke architectural surfaces offer the aesthetic weight of
+  natural elements while providing the unprecedented ability to seamlessly
+  wrap complex curves, columns, and intricate interior forms.
 images:
-  - src: /images/unique-architectural-materials-01.png
-    alt: Green and white striped weave and white barstools
-  - src: /images/unique-architectural-materials-03.webp
-    alt: Wave and beach wall art panels.
-  - src: /images/unique-architectural-materials-04.png
-    alt: Woven wicker-texture feature wall
-  - src: /images/unique-architectural-materials-07.png
-    alt: Curved beige marble wall alcoves.
-  - src: /images/unique-architectural-materials-08.png
-    alt: Red, white, and blue vertical striped wallpaper.
-  - src: /images/unique-architectural-materials-10.png
-    alt: Woven wall featuring a three-fish mural.
+  - src: /images/home-bespoke-architectural-materials.png
+    alt: Unique architectural material installation
+  - src: /images/laser-cut-1.png
+    alt: Custom laser cut architectural material installation
+    tag: Laser-cut Art
+  - src: /images/laser-cut-2.png
+    alt: Custom laser cut architectural material installation
+    tag: Laser-cut Art
+  - src: /images/terraflex-1.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-2.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-3.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-4.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-5.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-6.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+  - src: /images/terraflex-7.png
+    alt: Custom TerraFlex architectural material installation
+    tag: TerraFlex by Valora
+category_descriptions:
+  - tag: TerraFlex by Valora
+    description: Crafted from patented Modified Clay Material, TerraFlex
+      flawlessly recreates natural textures—including stone, wood, rope, and
+      rattan. Ultra-thin, flexible, and weather-resistant, this non-flammable
+      material seamlessly wraps complex interior and exterior architectural
+      forms with minimal structural load.
+  - tag: Laser-cut Art
+    description: Custom laser-cut in wood, metal, or acrylic, our panels bring
+      precision, pattern, and dimension to architectural spaces. Fully
+      customizable in scale and finish, they integrate seamlessly as wall
+      features, privacy screens, room dividers, and decorative accents.
 documents:
   - label: Unique Architectural Materials Catalog
     file: "#"

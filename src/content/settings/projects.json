@@ -1,15 +1,14 @@
 {
   "published": true,
-  "eyebrow": "Featured Work",
+  "eyebrow": "Projects - Narrative Spaces",
   "heading_before_em": "Discover Our ",
   "heading_em": "Projects",
   "heading_after_em": "",
   "paragraphs": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "No two vision statements are alike. We craft tailored art and architectural elements designed exclusively around each property, turning luxury hospitality concepts into timeless environments through rigorous project execution."
   ],
-  "image": "/images/rustic-serenity-at-a-colorado-ranch.png",
+  "image": "/images/home-featured-work.png",
   "image_alt": "Completed interior project featuring custom mirrors and art",
   "page_heading": "Our Projects",
-  "page_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A showcase of completed spaces where craftsmanship, art, and interior design come together."
+  "page_description": "Every space demands a unique narrative. We engineer custom art concepts and architectural features designed exclusively for each property. Blending elevated craftsmanship with precise execution, we bring exceptional hospitality visions to life."
 }

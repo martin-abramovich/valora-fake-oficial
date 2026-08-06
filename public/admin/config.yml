@@ -35,6 +35,14 @@ collections:
         fields:
           - { name: tag, label: Tag, widget: string, hint: "e.g. Metal" }
           - { name: description, label: Description, widget: text }
+      - name: specs
+        label: Technical Specifications
+        widget: list
+        required: false
+        hint: "Optional label + text pairs shown above the Technical Documents downloads (e.g. for solutions without gallery filter categories). Leave empty to hide this section."
+        fields:
+          - { name: label, label: Label, widget: string, hint: 'e.g. "Acoustic Performance"' }
+          - { name: text, label: Text, widget: text }
       - name: documents
         label: Technical Documents
         widget: list
@@ -322,7 +330,6 @@ collections:
             min: 1
             hint: "Short lines shown over the video, fading from one to the next automatically every few seconds"
             field: { name: text, label: Caption, widget: string }
-          - { name: page_heading, label: "Art Curation Page — Body Heading", widget: string }
           - name: page_paragraphs
             label: "Art Curation Page — Body Paragraphs"
             widget: list

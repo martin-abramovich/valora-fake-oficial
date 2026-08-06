@@ -5,11 +5,13 @@ description: Consectetur adipiscing elit — an urban loft renovation where
   bespoke acoustic panels resolved sound while elevating the space's visual
   identity.
 tags:
-  - "Acoustic Panels"
+  - "Printed Acoustic Panels"
 general_text:
   - "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
   - "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
 images:
+  - src: /images/project-02.png
+    alt: Dolor Sit Amet Loft — bespoke acoustic panels
   - src: /images/acoustic-panels-03.png
     alt: Acoustic panel wall in an open-plan urban loft
   - src: /images/acoustic-panels-04.png

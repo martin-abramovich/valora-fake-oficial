@@ -9,6 +9,8 @@ general_text:
   - "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat, duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."
   - "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 images:
+  - src: /images/project-03.png
+    alt: Consectetur Adipiscing Suite — bespoke architectural wallcoverings
   - src: /images/wallcoverings-01.webp
     alt: Custom wallcovering in a hospitality suite
   - src: /images/wallcoverings-02.webp

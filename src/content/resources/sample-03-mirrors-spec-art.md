@@ -1,7 +1,7 @@
 ---
-title: "Art Mirrors — Installation Guide"
+title: "Printed Mirrors — Installation Guide"
 type: Other
 category: "Custom Mirrors & LED"
-subcategory: Art
+subcategory: Printed
 file: "#"
 ---

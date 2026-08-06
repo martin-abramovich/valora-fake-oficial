@@ -1,24 +1,37 @@
 ---
 order: 2
-title: "Acoustic Panels"
-description: Where design meets technical performance. Bespoke acoustic
-  solutions that transform the materiality of a space while elevating its
-  atmosphere.
+title: "Printed Acoustic Panels"
+description: Where sophisticated design meets uncompromising technical
+  performance. Our bespoke acoustic solutions transform the materiality of a
+  space, introducing rich textures and visual narratives while beautifully
+  shaping the auditory experience of high-end interiors.
 images:
-  - src: /images/acoustic-panels-01.png
-    alt: Modern lobby with curved seating and illuminated acoustic panel wall
-      design.
-  - src: /images/acoustic-panels-02.png
-    alt: Patterned geometric acoustic wall panels.
-  - src: /images/acoustic-panels-06.png
-    alt: Acoustic Panel Ombre Bedroom
-  - src: /images/acoustic-panels-07.webp
-    alt: Wavy fluted acoustic panels with LEDs.
-  - src: /images/acoustic-panels-13.png
-    alt: Acoustic panels with a bold green palm print.
-  - src: /images/acoustic-panels-20.png
-    alt: Wood slatted wall panels with integrated vertical LED lights.
+  - src: /images/home-bespoke-acoustic-panels.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-01.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-02.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-03.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-04.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-05.png
+    alt: Custom acoustic panel installation
+  - src: /images/acoustic-panel-new-06.png
+    alt: Custom acoustic panel installation
+specs:
+  - label: Acoustic Performance
+    text: Engineered to absorb up to 45% of ambient noise, carrying a Class B
+      fire rating.
+  - label: Material Composition
+    text: PET fiber cores contain up to 60% recycled content. Made entirely in
+      the USA.
+  - label: Finishes & Customization
+    text: Offered in a broad range of wood, metallic, and solid-color finishes,
+      alongside water-resistant options for select environments. Custom
+      artwork or repeat patterns are developed by our in-house team.
 documents:
-  - label: Acoustic Panels Catalog
+  - label: Printed Acoustic Panels Catalog
     file: "#"
 ---

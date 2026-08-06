@@ -16,6 +16,10 @@ const solutions = defineCollection({
       tag: z.string(),
       description: z.string(),
     })).optional(),
+    specs: z.array(z.object({
+      label: z.string(),
+      text: z.string(),
+    })).optional(),
     documents: z.array(z.object({
       label: z.string(),
       file: z.string(),
